@@ -16,12 +16,19 @@ public class Prize extends Model {
     private Buyer winner;
 
     /**
+     * Partenaire fournisseur du lot
+     */
+    private Partner partner;
+
+    /**
      * Crée un nouveau lot.
      *
-     * @param label Libellé du lot
+     * @param label   Libellé du lot
+     * @param partner Partner fournisseur du lot
      */
-    public Prize(String label) {
+    public Prize(String label, Partner partner) {
         this.label = label;
+        this.partner = partner;
     }
 
 }
