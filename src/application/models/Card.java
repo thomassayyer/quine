@@ -95,11 +95,11 @@ public class Card extends Model {
     }
 
     public void fill(int number) {
-        //
+        // TODO: Réfléchir à la pertinence de cette méhtode.
     }
 
     public void unfill(int number) {
-        //
+        // TODO: Réfléchir à la pertinence de cette méthode.
     }
 
 }

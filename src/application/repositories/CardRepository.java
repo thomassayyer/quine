@@ -34,7 +34,7 @@ public class CardRepository extends Repository {
      * @param card Carton à enregistrer
      */
     public void store(Card card) {
-        //
+        // TODO: Effecuter l'opération de stockage d'un carton.
     }
 
     /**
@@ -43,6 +43,7 @@ public class CardRepository extends Repository {
      * @return Tous les cartons
      */
     public List<Card> all() {
+        // TODO: Récupérer tous les cartons enregistrés.
         return null;
     }
 
@@ -53,15 +54,17 @@ public class CardRepository extends Repository {
      * @return Carton correspondant
      */
     public Card find(int id) {
+        // TODO: Récupérer un carton en fonction de son ID.
         return null;
     }
 
     /**
-     * Récupère et retourne les cartons des personnes absentes.
+     * Récupère et retourne les cartons des joueurs absents.
      *
-     * @return Cartons des personnes absentes
+     * @return Cartons des joueurs absents
      */
     public List<Card> absents() {
+        // TODO: Récupérer les cartons des joueurs absents.
         return null;
     }
 
