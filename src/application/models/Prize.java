@@ -24,7 +24,7 @@ public class Prize extends Model {
      * Crée un nouveau lot.
      *
      * @param label   Libellé du lot
-     * @param partner Partner fournisseur du lot
+     * @param partner Partenaire fournisseur du lot
      */
     public Prize(String label, Partner partner) {
         this.label = label;
