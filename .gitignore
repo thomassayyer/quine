@@ -2,7 +2,7 @@
 *.log
 *.jar
 hs_err_pid*
-storage/*
+storage
 *.iml
 .idea
-out/*
+out
