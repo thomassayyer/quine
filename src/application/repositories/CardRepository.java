@@ -28,13 +28,9 @@ public class CardRepository extends Repository {
         return instance;
     }
 
-    /**
-     * Enregistre un nouveau carton dans le stockage interne.
-     *
-     * @param card Carton à enregistrer
-     */
-    public void store(Card card) {
-        // TODO: Effecuter l'opération de stockage d'un carton.
+    @Override
+    protected String specificDirectory() {
+        return "cards";
     }
 
     /**

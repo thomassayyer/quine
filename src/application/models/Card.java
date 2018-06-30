@@ -1,5 +1,7 @@
 package application.models;
 
+import java.util.Stack;
+
 /**
  * Représente un carton.
  */
@@ -14,6 +16,11 @@ public class Card extends Model {
      * Grille du carton
      */
     private int[][] grid;
+
+    /**
+     * Grille complétée
+     */
+    private int[][] filledGrid;
 
     /**
      * Acheteur du carton
@@ -38,6 +45,7 @@ public class Card extends Model {
         this.grid = grid;
         this.buyer = buyer;
         this.seller = seller;
+        this.filledGrid = new int[3][5];
     }
 
     /**
@@ -75,31 +83,43 @@ public class Card extends Model {
      * Récupère les coordonnées d'un nombre dans la grille du carton.
      *
      * @param  number  Nombre dont on veut récupérer les coordonnées
-     * @return Coordonées du nombre :
+     * @return Coordonées du nombre (peut être à plusieurs endroits). Pour chaque ligne :
      *         <ul>
-     *             <li>Indice 0 : Abscisse</li>
-     *             <li>Indice 1 : Ordonnée</li>
+     *             <li>[0] => Abscisse</li>
+     *             <li>[1] => Ordonnée</li>
      *         <ul/>
      */
-    public int[] find(int number) {
+    private Stack<int[]> find(int number) {
+
+        Stack<int[]> coordinates = new Stack<>();
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] == number) {
-                    return new int[]{i, j};
+                    coordinates.add(new int[]{i, j});
                 }
             }
         }
 
-        return null;
+        return coordinates;
     }
 
+    /**
+     * Ajoute 1 dans la / les cellule(s) correspondante(s) au numéro dans la grille remplie.
+     *
+     * @param number Numéro tiré
+     */
     public void fill(int number) {
-        // TODO: Réfléchir à la pertinence de cette méhtode.
+        find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 1);
     }
 
+    /**
+     * Ajoute 0 dans la / les cellule(s) correspondante(s) au numéro dans la grille remplie.
+     *
+     * @param number Numéro tiré
+     */
     public void unfill(int number) {
-        // TODO: Réfléchir à la pertinence de cette méthode.
+        find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 0);
     }
 
 }
