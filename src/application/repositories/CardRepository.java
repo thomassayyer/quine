@@ -15,6 +15,11 @@ public class CardRepository extends Repository {
     private static CardRepository instance = null;
 
     /**
+     * Crée und nouvelle instance de {@link CardRepository}.
+     */
+    private CardRepository() { }
+
+    /**
      * Retourne l'instance Singleton du repository.
      *
      * @return L'instance Singleton du repository
