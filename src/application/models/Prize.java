@@ -33,4 +33,13 @@ public class Prize extends Model implements Serializable {
         this.partner = partner;
     }
 
+    /**
+     * Détermine si le lot a été gagné.
+     *
+     * @return Vrai si le lot a été gagné; faux sinon
+     */
+    public boolean isWon() {
+        return winner != null;
+    }
+
 }
