@@ -21,7 +21,7 @@ public class Card extends Model implements Serializable {
     /**
      * Grille complétée
      */
-    private int[][] filledGrid;
+    private transient int[][] filledGrid;
 
     /**
      * Acheteur du carton

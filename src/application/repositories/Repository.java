@@ -66,13 +66,10 @@ public abstract class Repository<M extends Model> {
      */
     public M find(String filename) throws IOException, ClassNotFoundException {
         File file = new File(basePath + "/" + specificDirectory() + "/" + filename);
-        M object = null;
 
         try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file))) {
-            object = (M)stream.readObject();
+            return (M)stream.readObject();
         }
-
-        return object;
     }
 
     /**
