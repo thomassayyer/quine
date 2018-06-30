@@ -1,11 +1,12 @@
 package application.models;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 /**
  * Représente un carton.
  */
-public class Card extends Model {
+public class Card extends Model implements Serializable {
 
     /**
      * Identifiant unique du carton
@@ -49,6 +50,22 @@ public class Card extends Model {
     }
 
     /**
+     * Retourne l'ID du carton.
+     *
+     * @return L'ID du carton
+     */
+    public int getId() { return id; }
+
+    /**
+     * Retourne l'acheteur du carton.
+     *
+     * @return L'acheteur du carton
+     */
+    public Buyer getBuyer() {
+        return buyer;
+    }
+
+    /**
      * Détermine si le carton est vide.
      *
      * @return Vrai si le carton est vide; faux sinon
@@ -82,7 +99,8 @@ public class Card extends Model {
     /**
      * Récupère les coordonnées d'un nombre dans la grille du carton.
      *
-     * @param  number  Nombre dont on veut récupérer les coordonnées
+     * @param number Nombre dont on veut récupérer les coordonnées
+     *
      * @return Coordonées du nombre (peut être à plusieurs endroits). Pour chaque ligne :
      *         <ul>
      *             <li>[0] => Abscisse</li>
@@ -121,5 +139,4 @@ public class Card extends Model {
     public void unfill(int number) {
         find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 0);
     }
-
 }

@@ -22,7 +22,5 @@ public class Main extends Application {
      *
      * @param args Devrait toujours être null.
      */
-    public static void main(String[] args) {
-        launch(args);
-    }
+    public static void main(String[] args) { launch(args); }
 }
