@@ -97,7 +97,7 @@ public abstract class Repository<M extends Model> {
     /**
      * Crée le répertoire spécifique au repository.
      */
-    public void makeSpecificDir() {
-        (new File(basePath + specificDir())).mkdirs();
+    public boolean makeSpecificDir() {
+        return (new File(basePath + specificDir())).mkdirs();
     }
 }

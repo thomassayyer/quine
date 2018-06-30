@@ -23,8 +23,12 @@ public class Main extends Application {
      * Effectue les opérations pré-requises pour le bon fonctionnement de l'application.
      */
     private static void boot() {
-        CardRepository.getInstance().makeSpecificDir();
-        PrizeRepository.getInstance().makeSpecificDir();
+        if (!CardRepository.getInstance().makeSpecificDir()) {
+            System.out.println("[Warning] Impossible de créer le répertoire de stockage des cartons.");
+        }
+        if (PrizeRepository.getInstance().makeSpecificDir()) {
+            System.out.println("[Warning] Impossible de créer le répertoire de stockage des lots.");
+        }
     }
 
     /**
