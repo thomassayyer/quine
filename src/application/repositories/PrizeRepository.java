@@ -29,7 +29,7 @@ public class PrizeRepository extends Repository<Prize> {
     }
 
     @Override
-    protected String specificDirectory() {
+    protected String specificDir() {
         return "prizes";
     }
 }

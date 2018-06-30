@@ -14,14 +14,14 @@ public abstract class Repository<M extends Model> {
     /**
      * Chemin d'accès au dossier du stockage interne
      */
-    protected final String basePath = System.getProperty("user.dir") + "/storage";
+    protected static final String basePath = System.getProperty("user.dir") + "/storage";
 
     /**
      * Retourne le dossier spécifique associée à l'entrepôt.
      *
      * @return Dossier de l'entrepôt
      */
-    protected abstract String specificDirectory();
+    protected abstract String specificDir();
 
     /**
      * Stocke un objet dans un fichier binaire.
@@ -32,7 +32,7 @@ public abstract class Repository<M extends Model> {
      * @return Vrai si fichier a été créé; faux sinon
      */
     public boolean store(M object, String filename) {
-        File file = new File(basePath + "/" + specificDirectory() + "/" + filename);
+        File file = new File(basePath + "/" + specificDir() + "/" + filename);
 
         try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file))) {
             stream.writeObject(object);
@@ -51,7 +51,7 @@ public abstract class Repository<M extends Model> {
      * @return Vrai si le fichier a été supprimer; faux sinon
      */
     public boolean destroy(String filename) {
-        return new File(basePath + "/" + specificDirectory() + "/" + filename).delete();
+        return new File(basePath + "/" + specificDir() + "/" + filename).delete();
     }
 
     /**
@@ -65,7 +65,7 @@ public abstract class Repository<M extends Model> {
      * @throws ClassNotFoundException Lorsque la classe à instancier n'est pas accessible
      */
     public M find(String filename) throws IOException, ClassNotFoundException {
-        File file = new File(basePath + "/" + specificDirectory() + "/" + filename);
+        File file = new File(basePath + "/" + specificDir() + "/" + filename);
 
         try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file))) {
             return (M)stream.readObject();
@@ -81,7 +81,7 @@ public abstract class Repository<M extends Model> {
      * @throws ClassNotFoundException Lorsqu'il est impossible d'instancier un objet.
      */
     public List<M> all() throws IOException, ClassNotFoundException {
-        File[] files = new File(basePath + "/" + specificDirectory()).listFiles();
+        File[] files = new File(basePath + "/" + specificDir()).listFiles();
         List<M> objects = new ArrayList<>();
 
         // Ternaire nécessaire pour éviter l'exception java.lang.NullPointerException
@@ -92,5 +92,12 @@ public abstract class Repository<M extends Model> {
         }
 
         return objects;
+    }
+
+    /**
+     * Crée le répertoire spécifique au repository.
+     */
+    public void makeSpecificDir() {
+        (new File(basePath + specificDir())).mkdirs();
     }
 }

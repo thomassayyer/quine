@@ -37,7 +37,7 @@ public class CardRepository extends Repository<Card> {
     }
 
     @Override
-    protected String specificDirectory() {
+    protected String specificDir() {
         return "cards";
     }
 
@@ -64,7 +64,7 @@ public class CardRepository extends Repository<Card> {
      * @throws ClassNotFoundException Lorsqu'un carton n'a pas pu être instancié.
      */
     public List<Card> absents() throws IOException, ClassNotFoundException {
-        File[] files = new File(basePath + "/" + specificDirectory()).listFiles();
+        File[] files = new File(basePath + "/" + specificDir()).listFiles();
         List<Card> cards = new ArrayList<>();
 
         // Ternaire nécessaire pour éviter l'exception java.lang.NullPointerException
