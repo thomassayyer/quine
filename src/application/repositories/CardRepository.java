@@ -18,7 +18,7 @@ public class CardRepository extends Repository<Card> {
     private static CardRepository instance = null;
 
     /**
-     * Crée und nouvelle instance de {@link CardRepository}.
+     * Crée und nouvelle instance du repository.
      */
     private CardRepository() { }
 

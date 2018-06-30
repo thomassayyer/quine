@@ -1,9 +1,11 @@
 package application.models;
 
+import java.io.Serializable;
+
 /**
  * Représente un lot à gagner.
  */
-public class Prize extends Model {
+public class Prize extends Model implements Serializable {
 
     /**
      * Libellé du lot
@@ -18,7 +20,7 @@ public class Prize extends Model {
     /**
      * Partenaire fournisseur du lot
      */
-    private Partner partner;
+    private transient Partner partner;
 
     /**
      * Crée un nouveau lot.
