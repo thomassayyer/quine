@@ -1,6 +1,6 @@
-package application.repositories;
+package repositories;
 
-import application.models.Model;
+import models.Model;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -98,6 +98,12 @@ public abstract class Repository<M extends Model> {
      * Crée le répertoire spécifique au repository.
      */
     public boolean makeSpecificDir() {
-        return (new File(basePath + specificDir())).mkdirs();
+        File directory = new File(basePath + "/" + specificDir());
+
+        if (!directory.exists()) {
+            return directory.mkdirs();
+        }
+
+        return true;
     }
 }

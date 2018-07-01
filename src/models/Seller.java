@@ -1,4 +1,4 @@
-package application.models;
+package models;
 
 import java.io.Serializable;
 
@@ -21,6 +21,15 @@ public class Seller extends Model implements Serializable {
      * Dernier ID de carton danss la plage des cartons à vendre.
      */
     private int lastCard;
+
+    /**
+     * Crée un nouveau vendeur (sans spécifier de plage de cartons).
+     *
+     * @param name Nom du vendeur
+     */
+    public Seller(String name) {
+        this.name = name;
+    }
 
     /**
      * Crée un nouveau vendeur.

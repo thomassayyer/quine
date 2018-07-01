@@ -1,6 +1,6 @@
-package application.repositories;
+package repositories;
 
-import application.models.Prize;
+import models.Prize;
 
 import java.io.File;
 import java.io.IOException;

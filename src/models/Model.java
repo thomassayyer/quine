@@ -1,4 +1,4 @@
-package application.models;
+package models;
 
 /**
  * Classe mère de tous les modèles

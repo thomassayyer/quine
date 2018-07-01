@@ -1,4 +1,4 @@
-package application.models;
+package models;
 
 /**
  * Représente une entreprise partenaire.

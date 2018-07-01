@@ -1,5 +1,5 @@
-import application.repositories.CardRepository;
-import application.repositories.PrizeRepository;
+import repositories.CardRepository;
+import repositories.PrizeRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,7 +26,7 @@ public class Main extends Application {
         if (!CardRepository.getInstance().makeSpecificDir()) {
             System.out.println("[Warning] Impossible de créer le répertoire de stockage des cartons.");
         }
-        if (PrizeRepository.getInstance().makeSpecificDir()) {
+        if (!PrizeRepository.getInstance().makeSpecificDir()) {
             System.out.println("[Warning] Impossible de créer le répertoire de stockage des lots.");
         }
     }
