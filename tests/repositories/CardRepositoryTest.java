@@ -45,7 +45,7 @@ class CardRepositoryTest {
     void getInstance() {
         CardRepository repository = CardRepository.getInstance();
 
-        assertEquals(this.repository, repository);
+        assertEquals(CardRepositoryTest.repository, repository);
     }
 
     /**
