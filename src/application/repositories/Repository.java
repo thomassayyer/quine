@@ -68,7 +68,7 @@ public abstract class Repository<M extends Model> {
         File file = new File(basePath + "/" + specificDir() + "/" + filename);
 
         try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file))) {
-            return (M)stream.readObject();
+            return (M) stream.readObject();
         }
     }
 

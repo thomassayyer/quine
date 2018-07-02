@@ -56,6 +56,17 @@ public class CardRepository extends Repository<Card> {
     }
 
     /**
+     * Supprime un carton du stockage interne.
+     *
+     * @param id ID du carton à supprimer.
+     *
+     * @return Vrai si le carton a été supprimé; faux sinon
+     */
+    public boolean destroy(int id) {
+        return destroy(id + ".object");
+    }
+
+    /**
      * Récupère et retourne les cartons des joueurs absents.
      *
      * @return Cartons des joueurs absents
