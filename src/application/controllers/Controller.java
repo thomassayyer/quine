@@ -1,4 +1,4 @@
-package controllers;
+package application.controllers;
 
 /**
  * Classe mère de tous les contrôleurs

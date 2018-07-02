@@ -1,13 +1,13 @@
-package repositories;
+package application.repositories;
 
-import models.Model;
+import application.models.Model;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Classe mère de tous les repositories
+ * Classe mère de tous les application.repositories
  */
 public abstract class Repository<M extends Model> {
 

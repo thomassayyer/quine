@@ -1,6 +1,6 @@
-package repositories;
+package application.repositories;
 
-import models.Card;
+import application.models.Card;
 
 import java.io.File;
 import java.io.IOException;

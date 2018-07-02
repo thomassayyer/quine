@@ -1,10 +1,10 @@
 package repositories;
 
-import models.Buyer;
-import models.Card;
-import models.Seller;
+import application.models.Buyer;
+import application.models.Card;
+import application.models.Seller;
+import application.repositories.CardRepository;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
@@ -49,7 +49,7 @@ class CardRepositoryTest {
     }
 
     /**
-     * Effectue les tests relatifs à la méthode CardRepository.getInstance().
+     * Effectue les tests relatifs à la méthode CardRepository.find().
      */
     @Test
     void find() {
@@ -74,6 +74,9 @@ class CardRepositoryTest {
         assertEquals(card.getId(), actualCard.getId());
     }
 
+    /**
+     * Effectue les tests relatifs à la méthode CardRepository.absents().
+     */
     @Test
     void absents() {
         List<Card> absents = null;
@@ -81,6 +84,7 @@ class CardRepositoryTest {
         Card secondCard = new Card(9998, emptyGrid, new Buyer("John DOE", false), new Seller("Jane DOE"));
         Card thirdCard = new Card(9999, emptyGrid, new Buyer("John DOE", true), new Seller("Jane DOE"));
 
+        // Stockage des cartons
         try {
             ObjectOutputStream firstStream = new ObjectOutputStream(new FileOutputStream(new File(basePath + "/9997.object")));
             ObjectOutputStream secondStream = new ObjectOutputStream(new FileOutputStream(new File(basePath + "/9998.object")));
@@ -95,6 +99,7 @@ class CardRepositoryTest {
             fail(e.getMessage());
         }
 
+        // Récupération des cartons des absents
         try {
             absents = repository.absents();
         } catch (IOException | ClassNotFoundException e) {

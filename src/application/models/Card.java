@@ -1,4 +1,4 @@
-package models;
+package application.models;
 
 import java.io.Serializable;
 import java.util.Stack;

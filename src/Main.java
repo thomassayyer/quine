@@ -1,5 +1,5 @@
-import repositories.CardRepository;
-import repositories.PrizeRepository;
+import application.repositories.CardRepository;
+import application.repositories.PrizeRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
