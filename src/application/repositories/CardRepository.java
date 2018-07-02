@@ -5,6 +5,7 @@ import application.models.Card;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public class CardRepository extends Repository<Card> {
     private static CardRepository instance = null;
 
     /**
-     * Crée und nouvelle instance du repository.
+     * Crée une nouvelle instance du repository.
      */
     private CardRepository() { }
 
@@ -39,31 +40,6 @@ public class CardRepository extends Repository<Card> {
     @Override
     protected String specificDir() {
         return "cards";
-    }
-
-    /**
-     * Récupère et retourne un carton en fonction de son ID.
-     *
-     * @param id ID du carton à récupérer
-     *
-     * @return Le carton correspondant
-     *
-     * @throws IOException            Lorsque le fichier est inaccessible
-     * @throws ClassNotFoundException Lorsque le carton n'est pas instanciable
-     */
-    public Card find(int id) throws IOException, ClassNotFoundException {
-        return find(id + ".object");
-    }
-
-    /**
-     * Supprime un carton du stockage interne.
-     *
-     * @param id ID du carton à supprimer.
-     *
-     * @return Vrai si le carton a été supprimé; faux sinon
-     */
-    public boolean destroy(int id) {
-        return destroy(id + ".object");
     }
 
     /**

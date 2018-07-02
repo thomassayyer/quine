@@ -1,6 +1,7 @@
 package application.repositories;
 
 import application.models.Model;
+import application.models.Storable;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 /**
  * Classe mère de tous les application.repositories
  */
-public abstract class Repository<M extends Model> {
+public abstract class Repository<M extends Model & Storable> {
 
     /**
      * Chemin d'accès au dossier du stockage interne
@@ -26,13 +27,12 @@ public abstract class Repository<M extends Model> {
     /**
      * Stocke un objet dans un fichier binaire.
      *
-     * @param object   Objet à stocker
-     * @param filename Nom du fichier à stocker
+     * @param object Objet à stocker
      *
-     * @return Vrai si fichier a été créé; faux sinon
+     * @return Vrai si le fichier a été créé; faux sinon
      */
-    public boolean store(M object, String filename) {
-        File file = new File(basePath + "/" + specificDir() + "/" + filename);
+    public boolean store(M object) {
+        File file = new File(basePath + "/" + specificDir() + "/" + object.getId() + ".object");
 
         try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file))) {
             stream.writeObject(object);
@@ -44,32 +44,46 @@ public abstract class Repository<M extends Model> {
     }
 
     /**
-     * Supprime un fichier binaire.
+     * Supprime un objet du stockage interne.
      *
-     * @param filename Nom du fichier à supprimer
+     * @param id Identifiant unique de l'objet à supprimer
      *
      * @return Vrai si le fichier a été supprimer; faux sinon
      */
-    public boolean destroy(String filename) {
-        return new File(basePath + "/" + specificDir() + "/" + filename).delete();
+    public boolean destroy(int id) {
+        return new File(basePath + "/" + specificDir() + "/" + id + ".object").delete();
     }
 
     /**
-     * Récupère et retourne un objet du stockage interne.
+     * Récupère et retourne un objet du stockage interne (en fonction du nom du fichier).
      *
-     * @param filename Nom du fichier à récupérer
+     * @param filename Nom du fichier contenant l'objet à récupérer
      *
      * @return L'objet récupéré
      *
      * @throws IOException            Lorsque il est impossible d'accéder au fichier
      * @throws ClassNotFoundException Lorsque la classe à instancier n'est pas accessible
      */
-    public M find(String filename) throws IOException, ClassNotFoundException {
+    protected M find(String filename) throws IOException, ClassNotFoundException {
         File file = new File(basePath + "/" + specificDir() + "/" + filename);
 
         try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(file))) {
             return (M) stream.readObject();
         }
+    }
+
+    /**
+     * Récupère et retourne un objet du stockage interne.
+     *
+     * @param id Identifiant unique de l'objet à récupérer
+     *
+     * @return L'objet récupéré
+     *
+     * @throws IOException            Lorsque il est impossible d'accéder au fichier
+     * @throws ClassNotFoundException Lorsque la classe à instancier n'est pas accessible
+     */
+    public M find(int id) throws IOException, ClassNotFoundException {
+        return find(id + ".object");
     }
 
     /**

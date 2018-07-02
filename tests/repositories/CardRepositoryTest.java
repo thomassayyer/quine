@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class CardRepositoryTest {
 
+    /**
+     * Chemin de base du répertoire de stockage des cartons.
+     */
     private static final String basePath = System.getProperty("user.dir") + "/storage/cards";
 
     /**
@@ -60,35 +63,10 @@ class CardRepositoryTest {
     }
 
     /**
-     * Effectue les tests relatifs à la méthode {@link CardRepository#find(String)}.
-     */
-    @Test
-    void findByFilename() {
-        Card card = new Card(9999, emptyGrid, new Buyer("John DOE", true), new Seller("Jane DOE"));
-        Card actualCard = null;
-
-        // Stockage du carton
-        try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(new File(basePath + "/9999.object")))) {
-            stream.writeObject(card);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-
-        // Récupération du carton
-        try {
-            actualCard = repository.find("9999.object");
-        } catch (IOException | ClassNotFoundException e) {
-            fail(e.getMessage());
-        }
-
-        assertEquals(card.getId(), actualCard.getId());
-    }
-
-    /**
      * Effectue les tests relatifs à la méthode {@link CardRepository#find(int)}.
      */
     @Test
-    void findById() {
+    void find() {
         Card card = new Card(9999, emptyGrid, new Buyer("John DOE", true), new Seller("Jane DOE"));
         Card actualCard = null;
 
@@ -156,8 +134,9 @@ class CardRepositoryTest {
     void store() {
         Card card = new Card(9999, emptyGrid, new Buyer("John DOE", true), new Seller("Jane DOE"));
         Card storedCard = null;
+        boolean isSuccess = false;
 
-        repository.store(card, "9999.object");
+        isSuccess = repository.store(card);
 
         try (ObjectInputStream stream = new ObjectInputStream(new FileInputStream(new File(basePath + "/9999.object")))) {
             storedCard = (Card) stream.readObject();
@@ -165,40 +144,21 @@ class CardRepositoryTest {
             fail(e.getMessage());
         }
 
-        assertEquals(9999, storedCard.getId());
-    }
-
-    /**
-     * Effectue les tests relatifs à la méthode {@link CardRepository#destroy(String)}.
-     */
-    @Test
-    void destroyByFilename() {
-        Card card = new Card(9999, emptyGrid, new Buyer("John DOE", true), new Seller("Jane DOE"));
-        boolean isSuccess = false;
-
-        // Stockage du carton
-        try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(new File(basePath + "/9999.object")))) {
-            stream.writeObject(card);
-        } catch (IOException e) {
-            fail(e.getMessage());
-        }
-
-        // Suppression du carton
-        isSuccess = repository.destroy("9999.object");
-
         assertTrue(isSuccess);
+        assertEquals(9999, storedCard.getId());
     }
 
     /**
      * Effectue les tests relatifs à la méthode {@link CardRepository#destroy(int)}.
      */
     @Test
-    void destroyById() {
+    void destroy() {
+        File file = new File(basePath + "/9999.object");
         Card card = new Card(9999, emptyGrid, new Buyer("John DOE", true), new Seller("Jane DOE"));
         boolean isSuccess = false;
 
         // Stockage du carton
-        try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(new File(basePath + "/9999.object")))) {
+        try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file))) {
             stream.writeObject(card);
         } catch (IOException e) {
             fail(e.getMessage());
@@ -208,6 +168,7 @@ class CardRepositoryTest {
         isSuccess = repository.destroy(9999);
 
         assertTrue(isSuccess);
+        assertFalse(file.exists());
     }
 
     /**
@@ -263,10 +224,12 @@ class CardRepositoryTest {
                 System.out.println("[WARNING] Impossible de supprimer le dossier : " + basePath);
             }
         }
+        boolean isSuccess = false;
 
-        repository.makeSpecificDir();
+        isSuccess = repository.makeSpecificDir();
 
-        assertTrue((new File(basePath)).exists());
+        assertTrue(isSuccess);
+        assertTrue(cardsDir.exists());
     }
 
     /**

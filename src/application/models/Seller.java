@@ -39,7 +39,7 @@ public class Seller extends Model implements Serializable {
      * @param lastCard  Dernier carton dans la plage des cartons à vendre.
      */
     public Seller(String name, int firstCard, int lastCard) {
-        this.name = name;
+        this(name);
         this.firstCard = firstCard;
         this.lastCard = lastCard;
     }
