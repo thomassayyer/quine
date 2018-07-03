@@ -1,15 +1,14 @@
 package application.models;
 
-import java.io.Serializable;
 import java.util.Stack;
 
 /**
  * Représente un carton.
  */
-public class Card extends Model implements Serializable {
+public class Card extends Model implements Storable {
 
     /**
-     * Identifiant unique du carton
+     * Identifiant unique du carton.
      */
     private int id;
 
@@ -49,11 +48,7 @@ public class Card extends Model implements Serializable {
         this.filledGrid = new int[3][5];
     }
 
-    /**
-     * Retourne l'ID du carton.
-     *
-     * @return L'ID du carton
-     */
+    @Override
     public int getId() { return id; }
 
     /**
