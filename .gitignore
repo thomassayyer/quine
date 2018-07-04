@@ -7,5 +7,6 @@ storage
 .idea
 out
 doc
-.classpath
+/bin/
 .project
+.classpath

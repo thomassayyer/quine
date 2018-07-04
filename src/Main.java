@@ -1,5 +1,3 @@
-import application.repositories.CardRepository;
-import application.repositories.PrizeRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -13,22 +11,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("ui/views/home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("ui/views/Home.fxml"));
         primaryStage.setTitle("Quine - Accueil");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
-    }
-
-    /**
-     * Effectue les opérations pré-requises pour le bon fonctionnement de l'application.
-     */
-    private static void boot() {
-        if (!CardRepository.getInstance().makeSpecificDir()) {
-            System.out.println("[Warning] Impossible de créer le répertoire de stockage des cartons.");
-        }
-        if (!PrizeRepository.getInstance().makeSpecificDir()) {
-            System.out.println("[Warning] Impossible de créer le répertoire de stockage des lots.");
-        }
     }
 
     /**
@@ -37,7 +23,6 @@ public class Main extends Application {
      * @param args Devrait toujours être null.
      */
     public static void main(String[] args) {
-        boot();
         launch(args);
     }
 }
