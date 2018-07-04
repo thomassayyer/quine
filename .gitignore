@@ -6,4 +6,6 @@ storage
 *.iml
 .idea
 out
-doc
+/bin/
+.project
+.classpath
