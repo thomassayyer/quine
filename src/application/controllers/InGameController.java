@@ -18,20 +18,20 @@ public class InGameController extends Controller {
 	private List<Partner> partners;
 
 	/**
-	 * Instance Singleton du contrôleur
+	 * Instance Singleton du contrÃ´leur
 	 */
 	private static InGameController instance = null;
 
 	/**
-	 * Crée une nouvelle instance du controleur.
+	 * CrÃ©e une nouvelle instance du controleur.
 	 */
 	private InGameController() {
 	}
 
 	/**
-	 * Retourne l'instance Singleton du contrôleur.
+	 * Retourne l'instance Singleton du contrÃ´leur.
 	 *
-	 * @return L'instance Singleton du contrôleur
+	 * @return L'instance Singleton du contrÃ´leur
 	 */
 	public static InGameController getInstance() {
 

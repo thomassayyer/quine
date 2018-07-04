@@ -1,25 +1,25 @@
 package application.controllers;
 
 /**
- * Classe Accueil de tous les contr鬺eurs
+ * Classe Accueil de tous les contr么leurs
  */
 public abstract class AccueilController extends Controller {
 	
 	/**
-	 * Instance Singleton du contr鬺eur
+	 * Instance Singleton du contr么leur
 	 */
 	private static AccueilController instance = null;
 
 	/**
-	 * Cr閑 une nouvelle instance du controleur.
+	 * Cr茅e une nouvelle instance du controleur.
 	 */
 	private AccueilController() {
 	}
 
 	/**
-	 * Retourne l'instance Singleton du contr鬺eur.
+	 * Retourne l'instance Singleton du contr么leur.
 	 *
-	 * @return L'instance Singleton du contr鬺eur
+	 * @return L'instance Singleton du contr么leur
 	 */
 	public static AccueilController getInstance() {
 
