@@ -14,6 +14,7 @@ import application.repositories.PrizeRepository;
  * Contrôleur de la page "En jeu".
  */
 public class InGameController extends Controller {
+	
     // TODO: Réfléchir aux méthodes à implémenter.
 
 	// Liste des cartons des joueurs absents
@@ -80,5 +81,5 @@ public class InGameController extends Controller {
 		}
 	}
 
-	// TODO : Pop-up Carton absent gagnant.
+	// TODO: Pop-up Carton absent gagnant.
 }
