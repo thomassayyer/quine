@@ -61,13 +61,20 @@ public class Card extends Model implements Storable {
     }
 
     /**
+     * Retourne la grille complétée.
+     *
+     * @return La grille complétée
+     */
+    public int[][] getFilledGrid() { return filledGrid; }
+
+    /**
      * Détermine si le carton est vide.
      *
      * @return Vrai si le carton est vide; faux sinon
      */
     public boolean isEmpty() {
 
-        for (int[] row : grid) {
+        for (int[] row : filledGrid) {
             for (int value : row) {
                 if (value != 0) {
                     return false;
@@ -82,10 +89,10 @@ public class Card extends Model implements Storable {
      * Vide le carton.
      */
     public void empty() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] != 0) {
-                    grid[i][j] = 0;
+        for (int i = 0; i < filledGrid.length; i++) {
+            for (int j = 0; j < filledGrid[i].length; j++) {
+                if (filledGrid[i][j] != 0) {
+                    filledGrid[i][j] = 0;
                 }
             }
         }

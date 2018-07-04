@@ -1,7 +1,7 @@
 package application.controllers;
 
 /**
- * Classe mère de tous les contrôleurs
+ * Classe mÃ¨re de tous les contrÃ´leurs
  */
 public abstract class Controller {
 	//

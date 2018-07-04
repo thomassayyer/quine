@@ -16,20 +16,20 @@ public class ConfigController extends Controller {
 	private List<Partner> partners;
 
 	/**
-	 * Instance Singleton du contrôleur
+	 * Instance Singleton du contrÃ´leur
 	 */
 	private static ConfigController instance = null;
 
 	/**
-	 * Crée une nouvelle instance du controleur.
+	 * CrÃ©e une nouvelle instance du controleur.
 	 */
 	private ConfigController() {
 	}
 
 	/**
-	 * Retourne l'instance Singleton du contrôleur.
+	 * Retourne l'instance Singleton du contrÃ´leur.
 	 *
-	 * @return L'instance Singleton du contrôleur
+	 * @return L'instance Singleton du contrÃ´leur
 	 */
 	public static ConfigController getInstance() {
 
