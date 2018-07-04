@@ -1,6 +1,7 @@
 package application.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -32,6 +33,7 @@ public class Buyer extends Model implements Serializable {
     public Buyer(String name, boolean isPresent) {
         this.name = name;
         this.isPresent = isPresent;
+        this.prizes = new ArrayList<>();
     }
 
     /**
@@ -42,6 +44,13 @@ public class Buyer extends Model implements Serializable {
     public boolean isPresent() {
         return isPresent;
     }
+
+    /**
+     * Retourne les prix gagnés par le joueur.
+     *
+     * @return Les prix gagnés par le joueur
+     */
+    public List<Prize> getPrizes() { return prizes; }
 
     /**
      * Ajoute un prix à la liste des prix gagnés.
