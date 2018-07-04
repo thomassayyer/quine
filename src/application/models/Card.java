@@ -1,12 +1,14 @@
 package application.models;
 
+import java.util.Stack;
+
 /**
  * Représente un carton.
  */
-public class Card extends Model {
+public class Card extends Model implements Storable {
 
     /**
-     * Identifiant unique du carton
+     * Identifiant unique du carton.
      */
     private int id;
 
@@ -14,6 +16,11 @@ public class Card extends Model {
      * Grille du carton
      */
     private int[][] grid;
+
+    /**
+     * Grille complétée
+     */
+    private transient int[][] filledGrid;
 
     /**
      * Acheteur du carton
@@ -38,7 +45,27 @@ public class Card extends Model {
         this.grid = grid;
         this.buyer = buyer;
         this.seller = seller;
+        this.filledGrid = new int[3][5];
     }
+
+    @Override
+    public int getId() { return id; }
+
+    /**
+     * Retourne l'acheteur du carton.
+     *
+     * @return L'acheteur du carton
+     */
+    public Buyer getBuyer() {
+        return buyer;
+    }
+
+    /**
+     * Retourne la grille complétée.
+     *
+     * @return La grille complétée
+     */
+    public int[][] getFilledGrid() { return filledGrid; }
 
     /**
      * Détermine si le carton est vide.
@@ -47,7 +74,7 @@ public class Card extends Model {
      */
     public boolean isEmpty() {
 
-        for (int[] row : grid) {
+        for (int[] row : filledGrid) {
             for (int value : row) {
                 if (value != 0) {
                     return false;
@@ -62,10 +89,10 @@ public class Card extends Model {
      * Vide le carton.
      */
     public void empty() {
-        for (int i = 0; i < grid.length; i++) {
-            for (int j = 0; j < grid[i].length; j++) {
-                if (grid[i][j] != 0) {
-                    grid[i][j] = 0;
+        for (int i = 0; i < filledGrid.length; i++) {
+            for (int j = 0; j < filledGrid[i].length; j++) {
+                if (filledGrid[i][j] != 0) {
+                    filledGrid[i][j] = 0;
                 }
             }
         }
@@ -74,32 +101,44 @@ public class Card extends Model {
     /**
      * Récupère les coordonnées d'un nombre dans la grille du carton.
      *
-     * @param  number  Nombre dont on veut récupérer les coordonnées
-     * @return Coordonées du nombre :
+     * @param number Nombre dont on veut récupérer les coordonnées
+     *
+     * @return Coordonées du nombre (peut être à plusieurs endroits). Pour chaque ligne :
      *         <ul>
-     *             <li>Indice 0 : Abscisse</li>
-     *             <li>Indice 1 : Ordonnée</li>
+     *             <li>[0] => Abscisse</li>
+     *             <li>[1] => Ordonnée</li>
      *         <ul/>
      */
-    public int[] find(int number) {
+    private Stack<int[]> find(int number) {
+
+        Stack<int[]> coordinates = new Stack<>();
 
         for (int i = 0; i < grid.length; i++) {
             for (int j = 0; j < grid[i].length; j++) {
                 if (grid[i][j] == number) {
-                    return new int[]{i, j};
+                    coordinates.add(new int[]{i, j});
                 }
             }
         }
 
-        return null;
+        return coordinates;
     }
 
+    /**
+     * Ajoute 1 dans la / les cellule(s) correspondante(s) au numéro dans la grille remplie.
+     *
+     * @param number Numéro tiré
+     */
     public void fill(int number) {
-        // TODO: Réfléchir à la pertinence de cette méhtode.
+        find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 1);
     }
 
+    /**
+     * Ajoute 0 dans la / les cellule(s) correspondante(s) au numéro dans la grille remplie.
+     *
+     * @param number Numéro tiré
+     */
     public void unfill(int number) {
-        // TODO: Réfléchir à la pertinence de cette méthode.
+        find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 0);
     }
-
 }

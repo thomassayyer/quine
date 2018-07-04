@@ -1,37 +1,33 @@
 package application.repositories;
 
-import application.models.Card;
+import application.models.Prize;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-/**
- * Permet la récupération de cartons depuis le stockage interne.
- */
-public class CardRepository extends Repository<Card> {
+public class PrizeRepository extends Repository<Prize> {
 
     /**
      * Instance Singleton du repository
      */
-    private static CardRepository instance = null;
+    private static PrizeRepository instance = null;
 
     /**
-     * Crée une nouvelle instance du repository.
+     * Crée und nouvelle instance du repository.
      */
-    private CardRepository() { }
+    private PrizeRepository() { }
 
     /**
      * Retourne l'instance Singleton du repository.
      *
      * @return L'instance Singleton du repository
      */
-    public static CardRepository getInstance() {
+    public static PrizeRepository getInstance() {
 
         if (instance == null) {
-            instance = new CardRepository();
+            instance = new PrizeRepository();
         }
 
         return instance;
@@ -39,32 +35,32 @@ public class CardRepository extends Repository<Card> {
 
     @Override
     protected String specificDir() {
-        return "cards";
+        return "prizes";
     }
 
     /**
-     * Récupère et retourne les cartons des joueurs absents.
+     * Récupère et retourne les lots gagnants.
      *
-     * @return Cartons des joueurs absents
+     * @return Lots gagnants
      *
      * @throws IOException            Lorsqu'un des fichiers n'est pas accessible.
-     * @throws ClassNotFoundException Lorsqu'un carton n'a pas pu être instancié.
+     * @throws ClassNotFoundException Lorsqu'un lot n'a pas pu être instancié.
      */
-    public List<Card> absents() throws IOException, ClassNotFoundException {
+    public List<Prize> won() throws IOException, ClassNotFoundException {
         File[] files = new File(basePath + "/" + specificDir()).listFiles();
-        List<Card> cards = new ArrayList<>();
+        List<Prize> prizes = new ArrayList<>();
 
         // Ternaire nécessaire pour éviter l'exception java.lang.NullPointerException
         for (File file : files != null ? files : new File[0]) {
             if (file.isFile()) {
-                Card card = find(file.getName());
-                if (!card.getBuyer().isPresent()) {
-                    cards.add(card);
+                Prize prize = find(file.getName());
+                if (prize.isWon()) {
+                    prizes.add(prize);
                 }
             }
         }
 
-        return cards;
+        return prizes;
     }
 
 }
