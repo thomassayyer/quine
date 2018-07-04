@@ -2,8 +2,10 @@ package application.controllers;
 
 import java.util.List;
 
+import application.models.Buyer;
 import application.models.Card;
 import application.models.Partner;
+import application.models.Seller;
 
 public class ConfigController extends Controller {
 
@@ -65,7 +67,17 @@ public class ConfigController extends Controller {
 	 * Action du bouton sauvegarde
 	 * 
 	 */
-	private void sauvegarde() {
+	private void save() {
 		// TODO
 	}
+
+	// Gestion d'un carton
+
+	private void addCard(int[][] grid, String buyerName, String sellerName, Integer id) {
+		Buyer buyer = new Buyer(buyerName, false);
+		Seller seller = new Seller(sellerName);
+		Card card = new Card(id, grid, buyer, seller);
+		this.absentBuyerCard.add(card);
+	}
 }
+
