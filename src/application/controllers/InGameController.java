@@ -39,14 +39,12 @@ public class InGameController extends Controller {
 	 */
 	public void init() throws ClassNotFoundException, IOException {
 		this.absentBuyerCard = cardRepository.absents();
-		// this.partners = TODO
-		this.prizes = prizeRepository.won();
 	}
 
 	/**
 	 * Renseigne le num�ro sorti dans la liste
 	 *
-	 * @param choseNumber
+	 * @param number
 	 */
 	private void chooseNumber(int number) {
 		numbers.add(number);
