@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.VBox?>
+
+<?import javafx.geometry.Insets?>
+<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SettingsController">
+   <children>
+      <TabPane>
+      <tabs>
+          <Tab fx:id="createCardTab" closable="false" text="Création d'un carton" />
+          <Tab fx:id="addCardTab" closable="false" text="Ajout d'un carton sans joueur" />
+          <Tab fx:id="managePartnersTab" closable="false" text="Partenaires de la partie" />
+      </tabs>
+      </TabPane>
+      <Button mnemonicParsing="false" text="Sauvegarder">
+           <VBox.margin>
+               <Insets>
+                   <top>20</top>
+                   <bottom>20</bottom>
+               </Insets>
+           </VBox.margin>
+      </Button>
+   </children>
+</VBox>

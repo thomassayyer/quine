@@ -16,13 +16,11 @@ public class HomeController extends Controller {
 	 * Lancement du jeu de quine.
 	 */
 	public void onPlay() {
-        Parent root;
-
         try {
-            root = FXMLLoader.load(getClass().getResource("ui/views/inGame.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Quine - En jeu");
-            stage.setScene(new Scene(root, 300, 275));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../../ui/views/InGame.fxml")), 1280, 1080));
+            stage.setMaximized(true);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -33,13 +31,10 @@ public class HomeController extends Controller {
 	 * Ouvertue du menu de configuration.
 	 */
 	public void onSettings() {
-        Parent root;
-
         try {
-            root = FXMLLoader.load(getClass().getResource("ui/views/settings.fxml"));
             Stage stage = new Stage();
             stage.setTitle("Quine - Configuration");
-            stage.setScene(new Scene(root, 300, 275));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../../ui/views/Settings.fxml")), 1024, 768));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,35 +1,39 @@
 package application.controllers;
 
-import java.util.List;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 
-import application.models.Card;
-import application.models.Partner;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 /**
  * Contrôleur de la page de configuration.
  */
-public class SettingsController extends Controller {
+public class SettingsController extends Controller implements Initializable {
 
     /**
-     * Action lors du clic sur l'onglet "Création d'un carton".
+     * Onglet "Création d'un carton"
      */
-	public void onCreateCard() {
-        // TODO: Ouvrir la sous vue "createCard".
-    }
+    @FXML
+    private Tab createCardTab;
 
     /**
-     * Action lors du clic sur l'onglet "Ajout d'un carton".
+     * Onglet "Ajout d'un carton sans joueur"
      */
-    public void onAddCard() {
-        // TODO: Ouvrir la sous vue "addCard".
-    }
+    @FXML
+    private Tab addCardTab;
 
     /**
-     * Action lors du clic sur l'onglet "Gestion des partenaires".
+     * Onglet "Partenaires de la partie"
      */
-    public void onManagePartners() {
-        // TODO: Ouvrir la sous vue "managePartners".
-    }
+    @FXML
+    private Tab managePartnersTab;
 
 	/**
 	 * Action du bouton sauvegarde
@@ -40,4 +44,14 @@ public class SettingsController extends Controller {
 		// TODO: Configurer le contrôleur de la page "En jeu".
 	}
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        try {
+            createCardTab.setContent(FXMLLoader.load(getClass().getResource("../../ui/views/CreateCard.fxml")));
+            addCardTab.setContent(FXMLLoader.load(getClass().getResource("../../ui/views/AddCard.fxml")));
+            managePartnersTab.setContent(FXMLLoader.load(getClass().getResource("../../ui/views/ManagePartners.fxml")));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
