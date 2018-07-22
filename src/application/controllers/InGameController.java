@@ -1,19 +1,28 @@
 package application.controllers;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import application.models.Card;
 import application.models.Partner;
 import application.models.Prize;
 import application.repositories.CardRepository;
 import application.repositories.PrizeRepository;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TitledPane;
 
 /**
  * Contrôleur de la page "En jeu".
  */
-public class InGameController extends Controller {
+public class InGameController extends Controller implements Initializable {
+
+    @FXML
+	private TitledPane winnersCardsPane;
 	
     // TODO: Réfléchir aux méthodes à implémenter.
 
@@ -50,7 +59,29 @@ public class InGameController extends Controller {
 	private void chooseNumber(int number) {
 		numbers.add(number);
 		this.fillAbsentBuyerCard(number);
+
 	}
+
+    /**
+     * Onglet "Ajout d'un carton sans joueur"
+     */
+    @FXML
+    private Tab addCardTab;
+
+    /**
+     * Onglet "Partenaires de la partie"
+     */
+    @FXML
+    private Tab managePartnersTab;
+
+    /**
+     * Action du bouton sauvegarde
+     *
+     * @param controller Contrôleur de la page "En jeu"
+     */
+    public void onSave(InGameController controller) {
+        // TODO: Configurer le contrôleur de la page "En jeu".
+    }
 
 
 	// Work in progress
@@ -79,5 +110,10 @@ public class InGameController extends Controller {
 		}
 	}
 
-	// TODO: Pop-up Carton absent gagnant.
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+	    // TODO : Générer la grille de nombres (l'ID de a grille est "gridPane")
+    }
+
+    // TODO: Pop-up Carton absent gagnant.
 }
