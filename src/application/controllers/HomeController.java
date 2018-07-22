@@ -34,7 +34,7 @@ public class HomeController extends Controller {
         try {
             Stage stage = new Stage();
             stage.setTitle("Quine - Configuration");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../../ui/views/Settings.fxml")), 1024, 768));
+            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../../ui/views/Settings.fxml"))));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

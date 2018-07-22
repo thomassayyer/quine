@@ -141,4 +141,9 @@ public class Card extends Model implements Storable {
     public void unfill(int number) {
         find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 0);
     }
+
+    @Override
+    public String toString() {
+        return Integer.toString(getId());
+    }
 }

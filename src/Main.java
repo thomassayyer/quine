@@ -1,3 +1,5 @@
+import application.repositories.CardRepository;
+import application.repositories.PrizeRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -18,11 +20,20 @@ public class Main extends Application {
     }
 
     /**
-     * Démarre l'application.
+     * Effectue les pré-requis au bon fonctionnement de l'application.
+     */
+    private static void boot() {
+        CardRepository.getInstance().makeSpecificDir();
+        PrizeRepository.getInstance().makeSpecificDir();
+    }
+
+    /**
+     * Il s'agit de la première méthode appelée lors de l'exécution de l'application.
      *
      * @param args Devrait toujours être null.
      */
     public static void main(String[] args) {
+        boot();
         launch(args);
     }
 }

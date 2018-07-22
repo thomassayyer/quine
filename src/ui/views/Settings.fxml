@@ -6,16 +6,259 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.TitledPane?>
 <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SettingsController">
-   <children>
       <TabPane>
       <tabs>
-          <Tab fx:id="createCardTab" closable="false" text="Création d'un carton" />
-          <Tab fx:id="addCardTab" closable="false" text="Ajout d'un carton sans joueur" />
-          <Tab fx:id="managePartnersTab" closable="false" text="Partenaires de la partie" />
+          <Tab closable="false" text="Créer un nouveau carton">
+              <content>
+                  <VBox alignment="TOP_CENTER" spacing="20">
+                      <TextField fx:id="newCardId">
+                          <VBox.margin>
+                              <Insets>
+                                  <top>20</top>
+                              </Insets>
+                          </VBox.margin>
+                      </TextField>
+                      <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="newCardGrid">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </TextField>
+                      </GridPane>
+                      <Button text="Créer le carton" onAction="#onCreateCard" />
+                  </VBox>
+              </content>
+          </Tab>
+          <Tab closable="false" text="Ajouter un carton à la prochaine partie">
+              <content>
+                  <VBox alignment="TOP_CENTER" spacing="20">
+                      <Label text="N° du carton">
+                          <VBox.margin>
+                              <Insets>
+                                  <top>20</top>
+                                  <bottom>-15</bottom>
+                              </Insets>
+                          </VBox.margin>
+                      </Label>
+                      <ChoiceBox fx:id="cardsChoiceBox" onAction="#onSelectCard" />
+                      <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="addCardGrid">
+                          <columnConstraints>
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                              <font>
+                                  <Font size="13.0" />
+                              </font>
+                          </Label>
+                      </GridPane>
+                      <TextField promptText="Vendeur du carton" fx:id="sellerTextField" />
+                      <HBox alignment="CENTER">
+                          <TextField promptText="Acheteur du carton" fx:id="buyerTextField" />
+                          <CheckBox mnemonicParsing="false" text="Présent ?" fx:id="buyerPresentCheckBox">
+                              <HBox.margin>
+                                  <Insets>
+                                      <left>20</left>
+                                  </Insets>
+                              </HBox.margin>
+                          </CheckBox>
+                      </HBox>
+                      <Button mnemonicParsing="false" text="Ajouter le carton" onAction="#onAddCard">
+                          <VBox.margin>
+                              <Insets>
+                                  <bottom>20</bottom>
+                              </Insets>
+                          </VBox.margin>
+                      </Button>
+                  </VBox>
+              </content>
+          </Tab>
+          <Tab closable="false" text="Partenaires">
+              <content>
+                  <VBox spacing="20" alignment="CENTER">
+                      <TextField promptText="Nom du partenaire" fx:id="partnerNameTextField" />
+                      <Button mnemonicParsing="false" text="Logo" onAction="#onAddLogo" fx:id="addLogoButton" />
+                      <ImageView fx:id="partnerLogoViewer" />
+                      <Button mnemonicParsing="false" text="Ajouter le partenaire" onAction="#onAddPartner" />
+                      <TitledPane text="Partenaires ajoutés" fx:id="partnersPane" />
+                  </VBox>
+              </content>
+          </Tab>
       </tabs>
       </TabPane>
-      <Button mnemonicParsing="false" text="Sauvegarder">
+      <Button mnemonicParsing="false" text="Sauvegarder" onAction="#onSave">
            <VBox.margin>
                <Insets>
                    <top>20</top>
@@ -23,5 +266,4 @@
                </Insets>
            </VBox.margin>
       </Button>
-   </children>
 </VBox>
