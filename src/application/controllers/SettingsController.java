@@ -22,7 +22,10 @@ import javafx.collections.ObservableList;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.io.File;
 import java.util.ResourceBundle;
@@ -125,18 +128,12 @@ public class SettingsController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         // Generate TextField input
-        for (int column = 0; column < newCardGrid.getColumnCount(); column++){
-            for (int row = 0; row < newCardGrid.getRowCount(); row++){
+        for (int column = 0; column < 5; column++) {
+            for (int row = 0; row < 3; row++) {
                 newCardGrid.add(new TextField(), column, row);
             }
         }
 
-        try {
-            // Get all Card
-            cardsChoiceBox = (ChoiceBox<Card>) cards.all();
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
         try {
             reloadCardsChoiceBox();
         } catch (IOException | ClassNotFoundException e) {
@@ -148,61 +145,71 @@ public class SettingsController extends Controller implements Initializable {
      * Action du bouton "Créer le carton"
      */
 	public void onCreateCard() {
-        // TODO: Ajouter un carton au stockage interne et mettre à jour cardsChoiceBox.
+	    int columnCount = 5;
+	    int rowCount = 3;
 
-	    int collumCount = newCardGrid.getColumnCount();
-	    int rowCount = newCardGrid.getRowCount();
-
-        int grid[][] = new int[rowCount][collumCount];
+        int grid[][] = new int[rowCount][columnCount];
 	    for (int i = 0; i < rowCount; i++){
-            for (int j = 0; j < collumCount; j++){
+            for (int j = 0; j < columnCount; j++){
                 TextField textField = (TextField) getNodeByRowColumnIndex(i, j, newCardGrid);
-                int value = Integer.parseInt(textField.getCharacters().toString());
+                int value = 0;
+                if (textField != null) {
+                    value = Integer.parseInt(textField.getText());
+                }
                 grid[i][j] = value;
             }
         }
 
         int id =  Integer.parseInt(newCardId.getCharacters().toString());
-        Buyer buyer = new Buyer("name", true);
-        Seller seller = new Seller("name");
-        Card newCard = new Card(id, grid, buyer, seller);
+        Card newCard = new Card(id, grid);
 
         cards.store(newCard);
+
+        // Rechargement du menu déroulant des cartons
+        try {
+            reloadCardsChoiceBox();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Getter d'un noeud dans une grid en fonction de sa position
-     * @param row position horizontal du noeud
-     * @param column position vertical du noeud
-     * @param gridPane grid
-     * @return the node wished
+     * Getter d'un élément dans une grid en fonction de sa position
+     *
+     * @param row      Position horizontal du noeud
+     * @param column   Position vertical du noeud
+     * @param gridPane Grid
+     *
+     * @return L'élément souhaité
      */
-    public Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
-        Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
-
-        for (Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
+    private Node getNodeByRowColumnIndex (int row, int column, GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            Integer rowIndex = GridPane.getRowIndex(node);
+            Integer columnIndex = GridPane.getColumnIndex(node);
+            if (rowIndex != null && columnIndex != null && rowIndex == row && columnIndex == column) {
+                return node;
             }
         }
-
-        return result;
+        return null;
     }
 
     /**
      * Action lors de la sélection d'un carton à ajouter à la partie
      */
     public void onSelectCard() {
-	    // TODO: Recharger l'ensemble des éléments représentant le carton séléctionné dans la page d'ajout d'un carton à la partie.
         Card cardSelected = cardsChoiceBox.getValue();
 
-        for (int column = 0; column < newCardGrid.getColumnCount(); column++){
-            for (int row = 0; row < newCardGrid.getRowCount(); row++){
-                int gridValue = cardSelected.getFilledGrid()[column][row];
+        if (cardSelected == null) {
+            return;
+        }
+
+        addCardGrid.getChildren().clear();
+
+        for (int i = 0; i < 3; i++){
+            for (int j = 0; j < 5; j++){
+                int gridValue = cardSelected.getGrid()[i][j];
                 // Use ""+int as a solution to write integer in a label
-                addCardGrid.add(new Label(""+gridValue), column, row);
+                addCardGrid.add(new Label(""+gridValue), j, i);
             }
         }
     }
@@ -211,38 +218,38 @@ public class SettingsController extends Controller implements Initializable {
      * Action du bouton "Ajouter le carton"
      */
     public void onAddCard() {
-	    // TODO: Ajouter un carton dans la liste des cartons ajoutés et mettre à jour cardsChoiceBox.
         Card cardSelected = cardsChoiceBox.getValue();
 
         // Set buyer, seller and if the buyer is present
-        //cardSelected.setBuyer(buyerTextField);
-        //cardSelected.setSeller(sellerTextField);
-        //cardSelected.setIsPresent(buyerPresentCheckBox);
+        cardSelected.setBuyer(new Buyer(buyerTextField.getText(), buyerPresentCheckBox.isSelected()));
+        cardSelected.setSeller(new Seller(sellerTextField.getText()));
+
+        addedCards.add(cardSelected);
+
+        try {
+            reloadCardsChoiceBox();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Action du bouton "Logo"
      */
     public void onAddLogo() {
-        // TODO: Ouvrir l'explorateur pour ajouter un fichier et changer le label du bouton d'ajout d'un logo.
-
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Open Resource File");
+        fileChooser.setTitle("Choisir un logo");
 
         //Set extension filter, only png file used
-        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
         fileChooser.getExtensionFilters().addAll(extFilterPNG);
 
         //Show open file dialog
         File file = fileChooser.showOpenDialog(null);
 
         if (file != null) {
-            try {
-                partnerLogoViewer.setImage(new Image(file.getAbsolutePath()));
-                ImageIO.write(SwingFXUtils.fromFXImage(partnerLogoViewer.getImage(),null), "png", file);
-            } catch (IOException ex) {
-                // TODO : Do the catch IOException
-            }
+            partnerLogoViewer.setImage(new Image(file.getAbsolutePath()));
+            addLogoButton.setText(file.getName());
         }
     }
 
@@ -250,9 +257,14 @@ public class SettingsController extends Controller implements Initializable {
      * Action du bouton "Ajouter le partenaire"
      */
     public void onAddPartner() {
-        // TODO: Ajouter un partenaire à la prochaine partie.
         String partnersName = partnerNameTextField.getText();
-        String pathLogoPartner = partnerLogoViewer.getImage().getUrl();
+        String pathLogoPartner = null;
+
+        try {
+            pathLogoPartner = new File("../../ui/images/" + addLogoButton.getText()).getCanonicalPath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         Partner partner = new Partner(partnersName, pathLogoPartner);
 
@@ -280,7 +292,7 @@ public class SettingsController extends Controller implements Initializable {
         List<Card> cards = this.cards.all();
         List<Integer> addedCardsIds = addedCards.stream().map(Card::getId).collect(Collectors.toList());
 
-        cardsChoiceBox.getItems().removeAll();
+        cardsChoiceBox.getItems().clear();
 
         for (Card c : cards) {
             if (!addedCardsIds.contains(c.getId())) {

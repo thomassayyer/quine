@@ -41,11 +41,21 @@ public class Card extends Model implements Storable {
      * @param seller Vendeur du carton
      */
     public Card(int id, int[][] grid, Buyer buyer, Seller seller) {
-        this.id = id;
-        this.grid = grid;
+        this(id, grid);
         this.buyer = buyer;
         this.seller = seller;
         this.filledGrid = new int[3][5];
+    }
+
+    /**
+     * Crée un nouveau carton.
+     *
+     * @param id   Identifiant unique du carton à créer
+     * @param grid Grille du carton à créer
+     */
+    public Card(int id, int[][] grid) {
+        this.id = id;
+        this.grid = grid;
     }
 
     @Override
@@ -61,11 +71,29 @@ public class Card extends Model implements Storable {
     }
 
     /**
-     * Retourne la grille complétée.
+     * Retourne la grille.
      *
-     * @return La grille complétée
+     * @return La grille
      */
-    public int[][] getFilledGrid() { return filledGrid; }
+    public int[][] getGrid() { return grid; }
+
+    /**
+     * Configure la valeur de la propriété {@link #buyer}.
+     *
+     * @param buyer Acheteur du carton
+     */
+    public void setBuyer(Buyer buyer) {
+        this.buyer = buyer;
+    }
+
+    /**
+     * Configure la valeur de la propriété {@link #seller}.
+     *
+     * @param seller Vendeur du carton
+     */
+    public void setSeller(Seller seller) {
+        this.seller = seller;
+    }
 
     /**
      * Détermine si le carton est vide.
