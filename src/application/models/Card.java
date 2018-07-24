@@ -174,4 +174,43 @@ public class Card extends Model implements Storable {
     public String toString() {
         return Integer.toString(getId());
     }
+
+    /**
+     * Renvoie true si une ligne est rempli
+     * @return
+     */
+    public boolean lineDone(){
+        for (int row = 0; row < filledGrid.length; row++) {
+            int count = 0;
+            for (int column = 0; column < filledGrid[row].length; column++) {
+                if (filledGrid[row][column] == 1) {
+                    count ++;
+                }
+            }
+            if(count == 5){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Renvoie true si le carton est rempli
+     * @return
+     */
+    public boolean cardDone(){
+        int count = 0;
+        for (int row = 0; row < filledGrid.length; row++) {
+            for (int column = 0; column < filledGrid[row].length; column++) {
+                if (filledGrid[row][column] == 1) {
+                    count ++;
+                }
+            }
+        }
+        if(count == 15){
+            return true;
+        }
+        return false;
+    }
+
 }
