@@ -23,6 +23,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import javax.swing.text.html.ImageView;
+
 /**
  * Contrôleur de la page "En jeu".
  */
@@ -51,22 +53,36 @@ public class InGameController extends Controller implements Initializable {
 	 */
     @FXML
 	private Button ligneSimple;
-	
-    // TODO: Réfléchir aux méthodes à implémenter.
 
-	// Liste des cartons des joueurs absents
+    /**
+     * Image view pour les logos
+     */
+    @FXML
+    private ImageView logoImageView;
+
+    /**
+     * Liste des cartons de joueurs absent
+     */
 	private List<Card> absentBuyerCard;
 
-	// Liste des nombres
-	private LinkedList<Integer> numbers;
-
-	// Liste des partenaires
+    /**
+     * Liste des partenaires
+     */
 	private List<Partner> partners;
 
-	// Liste des partenaires
+    /**
+     * Liste des prix
+     */
 	private List<Prize> prizes;
 
+    /**
+     * CardRepository
+     */
 	private CardRepository cardRepository;
+
+    /**
+     * PrizeRepository
+     */
 	private PrizeRepository prizeRepository;
 
 	/**
@@ -75,7 +91,6 @@ public class InGameController extends Controller implements Initializable {
 	 * @param number numéro sorti
 	 */
 	private void chooseNumber(int number) {
-		numbers.add(number);
 		List<Card> wonCard = this.fillAbsentBuyerCard(number);
         printWonCard(wonCard);
 		Button button = this.getButtonByNum(number);
@@ -90,6 +105,7 @@ public class InGameController extends Controller implements Initializable {
 	    Node node = new VBox();
         for (Card card : wonCard) {
             Node text = new Text("Le Carton n° " + card.toString() + " est gagnant pour " + this.type);
+            // TODO : POP UP DU GAGNANT
             //winnersCardsPane.
             //winnersCardsPane.setContent(node);
         }
@@ -115,22 +131,40 @@ public class InGameController extends Controller implements Initializable {
 		return null;
 	}
 
-
-	// Work in progress
-
+    /**
+     * Type de partie : Carton plein ou ligne simple
+     */
 	private String type;
+
+    /**
+     * Variable global "Carton Plein"
+     */
 	private static final String CARTON_PLEIN = "Carton Plein";
+
+    /**
+     * Variable global "Ligne Simple"
+     */
 	private static final String LIGNE_SIMPLE = "Ligne Simple";
 
+    /**
+     * Button changement de partie en mode Carton Plein
+     */
 	public void onChangeTypeToCartonPlein() {
 		this.type = CARTON_PLEIN;
 	}
 
+    /**
+     * Button changement de partie en mode Ligne simple
+     */
 	public void onChangeTypeToLignSimple() {
 		this.type = LIGNE_SIMPLE;
 	}
 
-
+    /**
+     * Remplie les cartons des joueurs absents
+     * @param number numéro tiré
+     * @return Liste des cartons gagants
+     */
 	private List<Card> fillAbsentBuyerCard(int number) {
 	    List<Card> cards = new ArrayList<Card>();
 		for (Card card : absentBuyerCard) {
@@ -159,6 +193,13 @@ public class InGameController extends Controller implements Initializable {
 			e.printStackTrace();
 		}
 
+        // TODO: Affichage des logos.
+        for (Partner partner : partners){
+		    // Ajoute les images dans la image view
+            logoImageView.append(null);
+
+        }
+
 		// Initialise la grid
 		for (int column = 1; column < 10; column++) {
 			for (int row = 0; row < 9; row++) {
@@ -171,6 +212,4 @@ public class InGameController extends Controller implements Initializable {
 			}
 		}
     }
-
-    // TODO: Pop-up Carton absent gagnant.
 }
