@@ -52,6 +52,11 @@ public class SettingsController extends Controller implements Initializable {
     private List<Partner> addedPartners;
 
     /**
+     * Chemin absolue du logo du partenaire
+     */
+    private String imagePath = null;
+
+    /**
      * Champ de saisie de l'ID d'un nouveau carton
      */
     @FXML
@@ -123,6 +128,7 @@ public class SettingsController extends Controller implements Initializable {
     public SettingsController() {
         cards = CardRepository.getInstance();
         addedCards = new ArrayList<>();
+        addedPartners = new ArrayList<>();
     }
 
     @Override
@@ -247,8 +253,11 @@ public class SettingsController extends Controller implements Initializable {
         //Show open file dialog
         File file = fileChooser.showOpenDialog(null);
 
+        imagePath = file.toURI().toString();
+
         if (file != null) {
-            partnerLogoViewer.setImage(new Image(file.getAbsolutePath()));
+            Image imageLogo = new Image(imagePath);
+            partnerLogoViewer.setImage(imageLogo);
             addLogoButton.setText(file.getName());
         }
     }
@@ -258,13 +267,9 @@ public class SettingsController extends Controller implements Initializable {
      */
     public void onAddPartner() {
         String partnersName = partnerNameTextField.getText();
-        String pathLogoPartner = null;
+        String pathLogoPartner = this.imagePath;
 
-        try {
-            pathLogoPartner = new File("../../ui/images/" + addLogoButton.getText()).getCanonicalPath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        System.out.println(pathLogoPartner);
 
         Partner partner = new Partner(partnersName, pathLogoPartner);
 

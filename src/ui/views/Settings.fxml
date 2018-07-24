@@ -100,7 +100,7 @@
                   <VBox spacing="20" alignment="CENTER">
                       <TextField promptText="Nom du partenaire" fx:id="partnerNameTextField" />
                       <Button mnemonicParsing="false" text="Logo" onAction="#onAddLogo" fx:id="addLogoButton" />
-                      <ImageView fx:id="partnerLogoViewer" />
+                      <ImageView fx:id="partnerLogoViewer" fitHeight="150"/>
                       <Button mnemonicParsing="false" text="Ajouter le partenaire" onAction="#onAddPartner" />
                       <TitledPane text="Partenaires ajoutés" fx:id="partnersPane" />
                   </VBox>

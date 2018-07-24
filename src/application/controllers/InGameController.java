@@ -18,12 +18,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import javax.swing.text.html.ImageView;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -58,7 +58,7 @@ public class InGameController extends Controller implements Initializable {
      * Image view pour les logos
      */
     @FXML
-    private ImageView logoImageView;
+    private VBox logoVBox;
 
     /**
      * Liste des cartons de joueurs absent
@@ -196,12 +196,13 @@ public class InGameController extends Controller implements Initializable {
         // TODO: Affichage des logos.
         for (Partner partner : partners){
 		    // Ajoute les images dans la image view
-            logoImageView.append(null);
-
+            Image logo = new Image(partner.getLogoFilepath());
+            ImageView logoView = new ImageView(logo);
+            logoVBox.getChildren().addAll(logoView);
         }
 
 		// Initialise la grid
-		for (int column = 1; column < 10; column++) {
+		for (int column = 1; column < 11; column++) {
 			for (int row = 0; row < 9; row++) {
 				int number = 10 * row + column;
 				Button button = new Button(String.valueOf(number));
