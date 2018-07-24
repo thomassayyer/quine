@@ -91,10 +91,15 @@ public class InGameController extends Controller implements Initializable {
 	 * @param number numéro sorti
 	 */
 	private void chooseNumber(int number) {
-		List<Card> wonCard = this.fillAbsentBuyerCard(number);
+        // TODO : Modifier la couleur du bouton
+        Button button = this.getButtonByNum(number);
+        if(button.getStyle() == "-fx-background-color: #ff0000; "){
+            button.setStyle("-fx-background-color: #000000; ");
+        }else{
+            button.setStyle("-fx-background-color: #ff0000; ");
+        }
+	    List<Card> wonCard = this.fillAbsentBuyerCard(number);
         printWonCard(wonCard);
-		Button button = this.getButtonByNum(number);
-		// TODO : Modifier la couleur du bouton
 	}
 
     /**
@@ -187,19 +192,15 @@ public class InGameController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-		try{
-			this.absentBuyerCard = cardRepository.absents();
-		}catch (IOException | ClassNotFoundException e){
-			e.printStackTrace();
-		}
-
         // TODO: Affichage des logos.
+        /*
         for (Partner partner : partners){
 		    // Ajoute les images dans la image view
             Image logo = new Image(partner.getLogoFilepath());
             ImageView logoView = new ImageView(logo);
             logoVBox.getChildren().addAll(logoView);
         }
+        */
 
 		// Initialise la grid
 		for (int column = 1; column < 11; column++) {
