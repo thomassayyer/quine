@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.image.ImageView?>
 <HBox spacing="30.0" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.InGameController">
       <VBox>
             <TitledPane fx:id="winnersCardsPane" animated="false" minWidth="-Infinity" text="Cartons gagants">
@@ -21,12 +22,16 @@
       </VBox>
       <VBox>
             <HBox>
-                  <Button text="Carton plein"/>
-                <Button text="Ligne simple"/>
+                <Button text="Carton plein" fx:id="cartonPlein" onAction="#onChangeTypeToCartonPlein"/>
+                <Button text="Ligne simple" fx:id="ligneSimple" onAction="#onChangeTypeToLignSimple"/>
             </HBox>
-            <GridPane fx:id="grid" />
+            <GridPane gridLinesVisible="true" fx:id="grid">
+            </GridPane>
       </VBox>
-   <padding>
+      <VBox>
+        <ImageView fx:id="logoImageView"/>
+      </VBox>
+      <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
+      </padding>
 </HBox>
