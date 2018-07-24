@@ -38,7 +38,7 @@ public class InGameController extends Controller implements Initializable, Stora
 	private TitledPane winnersCardsPane;
 
     /**
-	 * Grid contenant l'ensemble de nombre possible
+	   * Grid contenant l'ensemble de nombre possible
      */
     @FXML
 	private GridPane grid;
@@ -70,6 +70,16 @@ public class InGameController extends Controller implements Initializable, Stora
      * Cartons de la partie
      */
 	private List<Card> cards;
+  
+  /**
+   * Liste des cartons des joueurs absents
+     */
+	private List<Card> absentBuyerCard;
+
+    /**
+     * Liste des nombres
+     */
+	private LinkedList<Integer> numbers;
 
     /**
      * Liste des partenaires
@@ -82,6 +92,11 @@ public class InGameController extends Controller implements Initializable, Stora
 	private List<Prize> prizes;
 
     /**
+     * Liste des lots gagnés
+     */
+	private List<Prize> prizes;
+
+  /**
      * CardRepository
      */
 	private CardRepository cardRepository;
@@ -121,6 +136,7 @@ public class InGameController extends Controller implements Initializable, Stora
 		// TODO : Modifier la couleur du bouton
 	}
 
+
     /**
      * Affiche les cartons gagnants
      * @param wonCard
@@ -135,7 +151,7 @@ public class InGameController extends Controller implements Initializable, Stora
         }
     }
 
-	/**
+	/*
 	 * Getter d'un élément dans une grid en fonction de sa position
 	 *
 	 * @param number
