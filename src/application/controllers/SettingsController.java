@@ -5,6 +5,7 @@ import application.models.Card;
 import application.models.Partner;
 import application.models.Seller;
 import application.repositories.CardRepository;
+import application.repositories.GameRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.BoundingBox;
@@ -37,9 +38,14 @@ import java.util.stream.Collectors;
 public class SettingsController extends Controller implements Initializable {
 
     /**
-     * Permet la récupération de cartons du stockage interne
+     * Permet la récupération de cartons du stockage interne.
      */
     private CardRepository cards;
+
+    /**
+     * Permet la récupération de parties de jeu du stockage interne.
+     */
+    private GameRepository games;
 
     /**
      * Liste des cartons ajoutés à la prochaine partie
@@ -122,6 +128,7 @@ public class SettingsController extends Controller implements Initializable {
      */
     public SettingsController() {
         cards = CardRepository.getInstance();
+        games = GameRepository.getInstance();
         addedCards = new ArrayList<>();
     }
 
@@ -279,7 +286,8 @@ public class SettingsController extends Controller implements Initializable {
      * Action du bouton "sauvegarde"
      */
     public void onSave() {
-        // TODO: Configurer le contrôleur de la page "En jeu".
+        InGameController controller = new InGameController(addedCards, addedPartners);
+        games.store(controller);
     }
 
     /**

@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import application.models.Card;
 import application.models.Partner;
 import application.models.Prize;
+import application.models.Storable;
 import application.repositories.CardRepository;
 import application.repositories.PrizeRepository;
 import javafx.fxml.FXML;
@@ -28,7 +29,7 @@ import javax.swing.text.html.ImageView;
 /**
  * Contrôleur de la page "En jeu".
  */
-public class InGameController extends Controller implements Initializable {
+public class InGameController extends Controller implements Initializable, Storable {
 
 	/**
 	 * Panel des cartons gagnants
@@ -63,7 +64,12 @@ public class InGameController extends Controller implements Initializable {
     /**
      * Liste des cartons de joueurs absent
      */
-	private List<Card> absentBuyerCard;
+	private List<Card> absentBuyerCards;
+
+    /**
+     * Cartons de la partie
+     */
+	private List<Card> cards;
 
     /**
      * Liste des partenaires
@@ -85,13 +91,31 @@ public class InGameController extends Controller implements Initializable {
      */
 	private PrizeRepository prizeRepository;
 
+    /**
+     * Crée un nouveau contrôleur pour la vue "InGame.fxml".
+     *
+     * @param cards    Cartons à jouer
+     * @param partners Partenaires ayant laissé un lot
+     */
+	public InGameController(List<Card> cards, List<Partner> partners) {
+        this.cards = cards;
+        this.partners = partners;
+        this.absentBuyerCards = new ArrayList<>();
+
+        for (Card card : this.cards) {
+            if (!card.getBuyer().isPresent()) {
+                this.absentBuyerCards.add(card);
+            }
+        }
+    }
+
 	/**
 	 * Renseigne le numéro sorti dans la liste
 	 *
 	 * @param number numéro sorti
 	 */
 	private void chooseNumber(int number) {
-		List<Card> wonCard = this.fillAbsentBuyerCard(number);
+		List<Card> wonCard = this.fillAbsentBuyerCards(number);
         printWonCard(wonCard);
 		Button button = this.getButtonByNum(number);
 		// TODO : Modifier la couleur du bouton
@@ -165,9 +189,9 @@ public class InGameController extends Controller implements Initializable {
      * @param number numéro tiré
      * @return Liste des cartons gagants
      */
-	private List<Card> fillAbsentBuyerCard(int number) {
+	private List<Card> fillAbsentBuyerCards(int number) {
 	    List<Card> cards = new ArrayList<Card>();
-		for (Card card : absentBuyerCard) {
+		for (Card card : absentBuyerCards) {
 			card.fill(number);
 			if(this.type == CARTON_PLEIN || card.cardDone()){
                 cards.add(card);
@@ -187,12 +211,6 @@ public class InGameController extends Controller implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-		try{
-			this.absentBuyerCard = cardRepository.absents();
-		}catch (IOException | ClassNotFoundException e){
-			e.printStackTrace();
-		}
-
         // TODO: Affichage des logos.
         for (Partner partner : partners){
 		    // Ajoute les images dans la image view
@@ -211,5 +229,10 @@ public class InGameController extends Controller implements Initializable {
 				grid.add(button, column, row);
 			}
 		}
+    }
+
+    @Override
+    public int getId() {
+        return 1;
     }
 }
