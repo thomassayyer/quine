@@ -1,8 +1,11 @@
 package application.controllers;
 
+import application.repositories.GameRepository;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -12,6 +15,18 @@ import java.io.IOException;
  */
 public class HomeController extends Controller {
 
+    /**
+     * Permet la récupération de parties de jeu du stockage interne.
+     */
+    private GameRepository games;
+
+    /**
+     * Crée un nouveau contrôleur pour la page d'accueil.
+     */
+    public HomeController() {
+        games = GameRepository.getInstance();
+    }
+
 	/**
 	 * Lancement du jeu de quine.
 	 */
@@ -19,10 +34,15 @@ public class HomeController extends Controller {
         try {
             Stage stage = new Stage();
             stage.setTitle("Quine - En jeu");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../../ui/views/InGame.fxml")), 1280, 1080));
+
+            FXMLLoader root = FXMLLoader.load(getClass().getResource("../../ui/views/InGame.fxml"));
+            root.setController(games.find(1));
+            root.setRoot(null);
+
+            stage.setScene(new Scene(root.load(), 1280, 1080));
             stage.setMaximized(true);
             stage.show();
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }

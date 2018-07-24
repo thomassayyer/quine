@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Permet la récupération de lots depuis le stockage interne.
+ */
 public class PrizeRepository extends Repository<Prize> {
 
     /**
