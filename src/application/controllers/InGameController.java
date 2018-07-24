@@ -19,12 +19,12 @@ import javafx.scene.Node;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-
-import javax.swing.text.html.ImageView;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -59,7 +59,7 @@ public class InGameController extends Controller implements Initializable, Stora
      * Image view pour les logos
      */
     @FXML
-    private ImageView logoImageView;
+    private VBox logoVBox;
 
     /**
      * Liste des cartons de joueurs absent
@@ -130,10 +130,15 @@ public class InGameController extends Controller implements Initializable, Stora
 	 * @param number numéro sorti
 	 */
 	private void chooseNumber(int number) {
-		List<Card> wonCard = this.fillAbsentBuyerCards(number);
+        // TODO : Modifier la couleur du bouton
+        Button button = this.getButtonByNum(number);
+        if(button.getStyle() == "-fx-background-color: #ff0000; "){
+            button.setStyle("-fx-background-color: #000000; ");
+        }else{
+            button.setStyle("-fx-background-color: #ff0000; ");
+        }
+	    List<Card> wonCard = this.fillAbsentBuyerCard(number);
         printWonCard(wonCard);
-		Button button = this.getButtonByNum(number);
-		// TODO : Modifier la couleur du bouton
 	}
 
 
@@ -228,14 +233,17 @@ public class InGameController extends Controller implements Initializable, Stora
     public void initialize(URL location, ResourceBundle resources) {
 
         // TODO: Affichage des logos.
+        /*
         for (Partner partner : partners){
 		    // Ajoute les images dans la image view
-            logoImageView.append(null);
-
+            Image logo = new Image(partner.getLogoFilepath());
+            ImageView logoView = new ImageView(logo);
+            logoVBox.getChildren().addAll(logoView);
         }
+        */
 
 		// Initialise la grid
-		for (int column = 1; column < 10; column++) {
+		for (int column = 1; column < 11; column++) {
 			for (int row = 0; row < 9; row++) {
 				int number = 10 * row + column;
 				Button button = new Button(String.valueOf(number));
