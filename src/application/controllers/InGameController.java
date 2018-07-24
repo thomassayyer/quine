@@ -15,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TitledPane;
+import javafx.scene.layout.GridPane;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -23,36 +24,36 @@ public class InGameController extends Controller implements Initializable {
 
     @FXML
 	private TitledPane winnersCardsPane;
-	
-    // TODO: Réfléchir aux méthodes à implémenter.
 
-	// Liste des cartons des joueurs absents
+    /**
+     * Liste des cartons des joueurs absents
+     */
 	private List<Card> absentBuyerCard;
 
-	// Liste des nombres
+    /**
+     * Liste des nombres
+     */
 	private LinkedList<Integer> numbers;
 
-	// Liste des partenaires
+    /**
+     * Liste des partenaires
+     */
 	private List<Partner> partners;
 
-	// Liste des partenaires
+    /**
+     * Liste des lots gagnés
+     */
 	private List<Prize> prizes;
+
 
 	private CardRepository cardRepository;
 	private PrizeRepository prizeRepository;
 
-	/**
-	 * Initialise le jeu
-	 *
-	 * @throws ClassNotFoundException
-	 * @throws IOException
-	 */
-	public void init() throws ClassNotFoundException, IOException {
-		this.absentBuyerCard = cardRepository.absents();
-	}
+	@FXML
+	private GridPane grid;
 
 	/**
-	 * Renseigne le num�ro sorti dans la liste
+	 * Renseigne le numéro sorti dans la liste
 	 *
 	 * @param number
 	 */

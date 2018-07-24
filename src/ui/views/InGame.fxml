@@ -24,17 +24,7 @@
                   <Button text="Carton plein"/>
                 <Button text="Ligne simple"/>
             </HBox>
-            <GridPane>
-                <Button mnemonicParsing="false" text="1" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <Button mnemonicParsing="false" text="2" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <Button mnemonicParsing="false" text="3" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <Button mnemonicParsing="false" text="4" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <Button mnemonicParsing="false" text="5" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <Button mnemonicParsing="false" text="6" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                <Button mnemonicParsing="false" text="7" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                <Button mnemonicParsing="false" text="8" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                <Button mnemonicParsing="false" text="9" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-            </GridPane>
+            <GridPane fx:id="grid" />
       </VBox>
    <padding>
       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
