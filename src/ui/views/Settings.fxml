@@ -43,81 +43,6 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
-                          <TextField alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </TextField>
                       </GridPane>
                       <Button text="Créer le carton" onAction="#onCreateCard" />
                   </VBox>
@@ -135,7 +60,7 @@
                           </VBox.margin>
                       </Label>
                       <ChoiceBox fx:id="cardsChoiceBox" onAction="#onSelectCard" />
-                      <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="addCardGrid">
+                      <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="addCardGrid" alignment="CENTER">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -148,81 +73,6 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="1">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
-                          <Label alignment="CENTER" prefHeight="17.0" prefWidth="41.0" text="0" GridPane.columnIndex="4" GridPane.rowIndex="2">
-                              <font>
-                                  <Font size="13.0" />
-                              </font>
-                          </Label>
                       </GridPane>
                       <TextField promptText="Vendeur du carton" fx:id="sellerTextField" />
                       <HBox alignment="CENTER">
@@ -250,7 +100,7 @@
                   <VBox spacing="20" alignment="CENTER">
                       <TextField promptText="Nom du partenaire" fx:id="partnerNameTextField" />
                       <Button mnemonicParsing="false" text="Logo" onAction="#onAddLogo" fx:id="addLogoButton" />
-                      <ImageView fx:id="partnerLogoViewer" />
+                      <ImageView fx:id="partnerLogoViewer" fitHeight="150"/>
                       <Button mnemonicParsing="false" text="Ajouter le partenaire" onAction="#onAddPartner" />
                       <TitledPane text="Partenaires ajoutés" fx:id="partnersPane" />
                   </VBox>

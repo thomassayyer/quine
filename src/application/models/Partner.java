@@ -26,4 +26,20 @@ public class Partner extends Model {
         this.logoFilepath = logoFilepath;
     }
 
+    /**
+     * Getter name
+     * @return this.name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Getter logo file path
+     * @return this.logoFilePath
+     */
+    public String getLogoFilepath() {
+        return logoFilepath;
+    }
+
 }

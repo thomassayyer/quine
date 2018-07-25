@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Classe mère de tous les application.repositories
  */
-public abstract class Repository<M extends Model & Storable> {
+public abstract class Repository<M extends Storable> {
 
     /**
      * Chemin d'accès au dossier du stockage interne

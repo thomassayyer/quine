@@ -1,4 +1,5 @@
 import application.repositories.CardRepository;
+import application.repositories.GameRepository;
 import application.repositories.PrizeRepository;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -25,6 +26,7 @@ public class Main extends Application {
     private static void boot() {
         CardRepository.getInstance().makeSpecificDir();
         PrizeRepository.getInstance().makeSpecificDir();
+        GameRepository.getInstance().makeSpecificDir();
     }
 
     /**
