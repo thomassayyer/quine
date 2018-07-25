@@ -8,7 +8,8 @@ import java.net.URL;
 import java.util.HashMap;
 
 import java.util.ArrayList;
-
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -88,11 +89,7 @@ public class InGameController extends Controller implements Initializable, Stora
      * Cartons de la partie
      */
 	private List<Card> cards;
-  
-  /**
-   * Liste des cartons des joueurs absents
-     */
-	private List<Card> absentBuyerCard;
+
 	
 
 
@@ -281,15 +278,24 @@ public class InGameController extends Controller implements Initializable, Stora
     	 table.addCell(sellerColumn);
     	 table.addCell(sellerColumn);
     	 table.setHeaderRows(1);
-    	 for(Card card : absentBuyerCard) {
-    		map.put(card.getSeller().getName(), card.getId());
-    	 }  	 
+    	 Collections.sort(this.cards, new Comparator<Card>() {
+
+			@Override
+			public int compare(Card o1, Card o2) {
+				
+				return o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName());
+			}
+		});
+    	 for (Card card : cards) {
+			table.addCell(card.getSeller().getName());
+			table.addCell(Integer.toString(card.getId()));
+		}
     	 document.add(table);
     }
     
     private void createPdf() throws FileNotFoundException, DocumentException {
     	Document document = new Document();
-    	 PdfWriter.getInstance(document, new FileOutputStream("test"));
+    	 PdfWriter.getInstance(document, new FileOutputStream(""));
     	 document.open();
     	 this.writeInPDF(document);
     	 document.close();
