@@ -44,7 +44,7 @@ public class Card extends Model implements Storable {
         this.id = id;
         this.grid = grid;
         this.buyer = buyer;
-        this.seller = seller;
+        this.setSeller(seller);
         this.filledGrid = new int[3][5];
     }
 
@@ -146,4 +146,12 @@ public class Card extends Model implements Storable {
     public String toString() {
         return Integer.toString(getId());
     }
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+	public void setSeller(Seller seller) {
+		this.seller = seller;
+	}
 }

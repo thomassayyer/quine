@@ -20,5 +20,9 @@ public class Seller extends Model implements Serializable {
     public Seller(String name) {
         this.name = name;
     }
+    
+    public String getName() {
+    	return this.name;
+    }
 
 }

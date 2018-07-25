@@ -1,14 +1,26 @@
 package application.controllers;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.sun.javafx.collections.MappingChange.Map;
+
 import application.models.Card;
 import application.models.Partner;
 import application.models.Prize;
+import application.models.Seller;
 import application.repositories.CardRepository;
 import application.repositories.PrizeRepository;
 import javafx.fxml.FXML;
@@ -28,6 +40,8 @@ public class InGameController extends Controller implements Initializable {
 
 	// Liste des cartons des joueurs absents
 	private List<Card> absentBuyerCard;
+	
+
 
 	// Liste des nombres
 	private LinkedList<Integer> numbers;
@@ -114,6 +128,29 @@ public class InGameController extends Controller implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 	    // TODO : Générer la grille de nombres (l'ID de a grille est "gridPane")
     }
-
+    
+    private void writeInPDF(Document document) throws DocumentException {
+    	 HashMap<String, Integer> map = new HashMap<String, Integer>();
+    	 PdfPTable table = new PdfPTable(2);
+    	 PdfPCell sellerColumn = new PdfPCell();
+    	 PdfPCell cardNumber = new PdfPCell();
+    	 sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
+    	 cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
+    	 table.addCell(sellerColumn);
+    	 table.addCell(sellerColumn);
+    	 table.setHeaderRows(1);
+    	 for(Card card : absentBuyerCard) {
+    		map.put(card.getSeller().getName(), card.getId());
+    	 }  	 
+    	 document.add(table);
+    }
+    
+    private void createPdf() throws FileNotFoundException, DocumentException {
+    	Document document = new Document();
+    	 PdfWriter.getInstance(document, new FileOutputStream("test"));
+    	 document.open();
+    	 this.writeInPDF(document);
+    	 document.close();
+    }
     // TODO: Pop-up Carton absent gagnant.
 }
