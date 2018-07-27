@@ -16,6 +16,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -23,7 +25,10 @@ import javafx.scene.text.Text;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -37,7 +42,7 @@ public class InGameController extends Controller implements Initializable, Stora
 	private TitledPane winnersCardsPane;
 
     /**
-	   * Grid contenant l'ensemble de nombre possible
+	 * Grid contenant l'ensemble de nombre possible
      */
     @FXML
 	private GridPane grid;
@@ -70,7 +75,6 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	private List<Card> cards;
 
-
     /**
      * Liste des nombres
      */
@@ -90,6 +94,21 @@ public class InGameController extends Controller implements Initializable, Stora
      * PrizeRepository
      */
 	private PrizeRepository prizeRepository;
+
+	/**
+	 * Type de partie : Carton plein ou ligne simple
+	 */
+	private String type;
+
+	/**
+	 * Variable global "Carton Plein"
+	 */
+	private static final String CARTON_PLEIN = "Carton Plein";
+
+	/**
+	 * Variable global "Ligne Simple"
+	 */
+	private static final String LIGNE_SIMPLE = "Ligne Simple";
 
     /**
      * Crée un nouveau contrôleur pour la vue "InGame.fxml".
@@ -115,13 +134,14 @@ public class InGameController extends Controller implements Initializable, Stora
 	 * @param number numéro sorti
 	 */
 	private void chooseNumber(int number) {
-        // TODO : Modifier la couleur du bouton
         Button button = this.getButtonByNum(number);
-        if(button.getStyle() == "-fx-background-color: #ff0000; "){
+        if(button != null && button.getStyle().equals("-fx-background-color: #ff0000; ")) {
             button.setStyle("-fx-background-color: #000000; ");
-        }else{
-            button.setStyle("-fx-background-color: #ff0000; ");
-        }
+        } else {
+			if (button != null) {
+				button.setStyle("-fx-background-color: #ff0000; ");
+			}
+		}
 	    List<Card> wonCard = this.fillAbsentBuyerCards(number);
         printWonCard(wonCard);
 	}
@@ -162,21 +182,6 @@ public class InGameController extends Controller implements Initializable, Stora
 	}
 
     /**
-     * Type de partie : Carton plein ou ligne simple
-     */
-	private String type;
-
-    /**
-     * Variable global "Carton Plein"
-     */
-	private static final String CARTON_PLEIN = "Carton Plein";
-
-    /**
-     * Variable global "Ligne Simple"
-     */
-	private static final String LIGNE_SIMPLE = "Ligne Simple";
-
-    /**
      * Button changement de partie en mode Carton Plein
      */
 	public void onChangeTypeToCartonPlein() {
@@ -199,10 +204,10 @@ public class InGameController extends Controller implements Initializable, Stora
 	    List<Card> cards = new ArrayList<Card>();
 		for (Card card : absentBuyerCards) {
 			card.fill(number);
-			if(this.type == CARTON_PLEIN || card.cardDone()){
+			if(this.type.equals(CARTON_PLEIN) || card.cardDone()){
                 cards.add(card);
             }
-            if(this.type == LIGNE_SIMPLE ||card.lineDone()){
+            if(this.type.equals(LIGNE_SIMPLE) || card.lineDone()){
                 cards.add(card);
             }
 		}
@@ -217,15 +222,12 @@ public class InGameController extends Controller implements Initializable, Stora
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        // TODO: Affichage des logos.
-        /*
         for (Partner partner : partners){
 		    // Ajoute les images dans la image view
             Image logo = new Image(partner.getLogoFilepath());
             ImageView logoView = new ImageView(logo);
             logoVBox.getChildren().addAll(logoView);
         }
-        */
 
 		// Initialise la grid
 		for (int column = 1; column < 11; column++) {
@@ -242,7 +244,6 @@ public class InGameController extends Controller implements Initializable, Stora
 
     
     private void writeInPDF(Document document) throws DocumentException {
-    	 HashMap<String, Integer> map = new HashMap<String, Integer>();
     	 PdfPTable table = new PdfPTable(2);
     	 PdfPCell sellerColumn = new PdfPCell();
     	 PdfPCell cardNumber = new PdfPCell();
@@ -251,14 +252,7 @@ public class InGameController extends Controller implements Initializable, Stora
     	 table.addCell(sellerColumn);
     	 table.addCell(sellerColumn);
     	 table.setHeaderRows(1);
-    	 Collections.sort(this.cards, new Comparator<Card>() {
-
-			@Override
-			public int compare(Card o1, Card o2) {
-				
-				return o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName());
-			}
-		});
+    	 this.cards.sort((o1, o2) -> o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName()));
     	 for (Card card : cards) {
 			table.addCell(card.getSeller().getName());
 			table.addCell(Integer.toString(card.getId()));
@@ -273,8 +267,6 @@ public class InGameController extends Controller implements Initializable, Stora
     	 this.writeInPDF(document);
     	 document.close();
     }
-    // TODO: Pop-up Carton absent gagnant.
-
 
     @Override
     public int getId() {
