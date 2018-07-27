@@ -12,17 +12,17 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 import java.awt.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -144,13 +144,16 @@ public class InGameController extends Controller implements Initializable, Stora
 	private void chooseNumber(int number) {
         Button button = this.getButtonByNum(number);
 	    if (numbers.contains(number)) {
-            if (button != null) {
-                button.setStyle("");
-            }
             removeNumber(number);
         } else {
+            for (int i : numbers) {
+                Button btn = getButtonByNum(i);
+                if (btn != null) {
+                    btn.setStyle("-fx-background-color: #ff0000; ");
+                }
+            }
             if (button != null) {
-                button.setStyle("-fx-background-color: #ff0000; ");
+                button.setStyle("-fx-background-color: #00ff00; ");
             }
             numbers.add(number);
         }
@@ -166,6 +169,20 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	private void printWonCard(List<Card> wonCard){
         for (Card card : wonCard) {
+            boolean alreadyWon = false;
+            for (VBox vb : wonContainers) {
+                for (Node n : vb.getChildren()) {
+                    if (n instanceof TextField && !n.isVisible()) {
+                        int id = Integer.parseInt(((TextField)n).getText());
+                        if (id == card.getId()) {
+                            alreadyWon = true;
+                        }
+                    }
+                }
+            }
+            if (alreadyWon) {
+                continue;
+            }
             VBox container = new VBox();
             container.setSpacing(10);
             container.setAlignment(Pos.CENTER);
@@ -174,7 +191,6 @@ public class InGameController extends Controller implements Initializable, Stora
             cardIdTextField.setVisible(false);
             Label label = new Label("Lot gagné :");
             ChoiceBox<Prize> prizeChoiceBox = new ChoiceBox<>();
-            reloadPrizeChoiceBoxes();
             TitledPane wonPane = new TitledPane();
             wonPane.setText("Lots gagnés");
             HBox wonHBox = new HBox();
@@ -199,16 +215,14 @@ public class InGameController extends Controller implements Initializable, Stora
 	 * @return L'élément souhaité
 	 */
 	private Button getButtonByNum (int number) {
-		int row = (number - (number%10)) / 10;
-		int column = number%10;
-		for (Node node : grid.getChildren()) {
-			Integer rowIndex = GridPane.getRowIndex(node);
-			Integer columnIndex = GridPane.getColumnIndex(node);
-			if (rowIndex != null && columnIndex != null && rowIndex == row && columnIndex == column) {
-				return (Button) node;
-			}
-		}
-		return null;
+	    for (Node n : grid.getChildren()) {
+	        if (n instanceof Button) {
+                if (Integer.parseInt(((Button)n).getText()) == number) {
+                    return (Button)n;
+                }
+            }
+        }
+        return null;
 	}
 
     /**
@@ -379,6 +393,10 @@ public class InGameController extends Controller implements Initializable, Stora
             getButtonByNum(number).setStyle("");
         }
         numbers.remove((Object)number);
+        Button lastBtn = getButtonByNum(numbers.getLast());
+        if (lastBtn != null) {
+            lastBtn.setStyle("-fx-background-color: #00ff00; ");
+        }
         List<Card> cards = unfillAbsentBuyerCards(number);
         for (Card c : cards) {
             for (VBox vb : wonContainers) {
