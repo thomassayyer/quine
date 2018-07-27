@@ -41,30 +41,4 @@ public class CardRepository extends Repository<Card> {
     protected String specificDir() {
         return "cards";
     }
-
-    /**
-     * Récupère et retourne les cartons des joueurs absents.
-     *
-     * @return Cartons des joueurs absents
-     *
-     * @throws IOException            Lorsqu'un des fichiers n'est pas accessible.
-     * @throws ClassNotFoundException Lorsqu'un carton n'a pas pu être instancié.
-     */
-    public List<Card> absents() throws IOException, ClassNotFoundException {
-        File[] files = new File(basePath + "/" + specificDir()).listFiles();
-        List<Card> cards = new ArrayList<>();
-
-        // Ternaire nécessaire pour éviter l'exception java.lang.NullPointerException
-        for (File file : files != null ? files : new File[0]) {
-            if (file.isFile()) {
-                Card card = find(file.getName());
-                if (!card.getBuyer().isPresent()) {
-                    cards.add(card);
-                }
-            }
-        }
-
-        return cards;
-    }
-
 }

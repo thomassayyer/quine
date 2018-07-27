@@ -20,11 +20,6 @@ public class Buyer extends Model implements Serializable {
     private boolean isPresent;
 
     /**
-     * L'ensemble des prix gagnés par le joueur (ou "acheteur")
-     */
-    private List<Prize> prizes;
-
-    /**
      * Crée un nouvel acheteur.
      *
      * @param name      Nom de l'acheteur
@@ -33,7 +28,6 @@ public class Buyer extends Model implements Serializable {
     public Buyer(String name, boolean isPresent) {
         this.name = name;
         this.isPresent = isPresent;
-        this.prizes = new ArrayList<>();
     }
 
     /**
@@ -46,32 +40,12 @@ public class Buyer extends Model implements Serializable {
     }
 
     /**
-     * Retourne les prix gagnés par le joueur.
+     * Retourne le nom de l'acheteur.
      *
-     * @return Les prix gagnés par le joueur
+     * @return Le nom de l'acheteur
      */
-    public List<Prize> getPrizes() { return prizes; }
-
-    /**
-     * Ajoute un prix à la liste des prix gagnés.
-     *
-     * @param prize Prix à ajouter
-     *
-     * @return Vrai si le prix a été ajouté; faux sinon
-     */
-    public boolean addPrize(Prize prize) {
-        return prizes.add(prize);
-    }
-
-    /**
-     * Supprime un prix de la liste des prix gagnés.
-     *
-     * @param prize Prix à supprimer
-     *
-     * @return Vrai si le prix a été supprimé; faux sinon
-     */
-    public boolean removePrize(Prize prize) {
-        return prizes.remove(prize);
+    public String getName() {
+        return name;
     }
 
 }

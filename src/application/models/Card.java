@@ -25,7 +25,7 @@ public class Card extends Model implements Storable {
     /**
      * Acheteur du carton
      */
-    private transient Buyer buyer;
+    private Buyer buyer;
 
     /**
      * Vendeur du carton
@@ -227,6 +227,11 @@ public class Card extends Model implements Storable {
     @Override
     public String toString() {
         return String.valueOf(id);
+    }
+
+    @Override
+    public void beforeSerialization() {
+        this.buyer = null;
     }
 
 }

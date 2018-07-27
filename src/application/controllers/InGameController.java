@@ -393,13 +393,16 @@ public class InGameController extends Controller implements Initializable, Stora
             getButtonByNum(number).setStyle("");
         }
         numbers.remove((Object)number);
-        Button lastBtn = getButtonByNum(numbers.getLast());
-        if (lastBtn != null) {
-            lastBtn.setStyle("-fx-background-color: #00ff00; ");
+        if (!numbers.isEmpty()) {
+            Button lastBtn = getButtonByNum(numbers.getLast());
+            if (lastBtn != null) {
+                lastBtn.setStyle("-fx-background-color: #00ff00; ");
+            }
         }
         List<Card> cards = unfillAbsentBuyerCards(number);
         for (Card c : cards) {
-            for (VBox vb : wonContainers) {
+            List<VBox> containers = new ArrayList<>(wonContainers);
+            for (VBox vb : containers) {
                 for (Node n : vb.getChildren()) {
                     if (n instanceof TextField && !n.isVisible()) {
                         if (Integer.parseInt(((TextField)n).getText()) == c.getId()) {
@@ -410,6 +413,12 @@ public class InGameController extends Controller implements Initializable, Stora
                     }
                 }
             }
+            List<Prize> prizes = new ArrayList<>(wonPrizes);
+            for (Prize p : prizes) {
+                if (p.getWinner().getName().equals(c.getBuyer().getName())) {
+                    wonPrizes.remove(p);
+                }
+            }
         }
     }
 
@@ -417,6 +426,7 @@ public class InGameController extends Controller implements Initializable, Stora
      * Remet la partie à 0.
      */
     public void clear() {
+        List<Integer> numbers = (List<Integer>) this.numbers.clone();
         for (int num : numbers) {
             removeNumber(num);
         }

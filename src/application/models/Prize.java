@@ -59,6 +59,15 @@ public class Prize extends Model implements Storable {
         this.winner = winner;
     }
 
+    /**
+     * Retourne le gagnant du lot.
+     *
+     * @return Gagnant du lot
+     */
+    public Buyer getWinner() {
+        return winner;
+    }
+
     @Override
     public String toString() {
         return String.valueOf(this.id);
