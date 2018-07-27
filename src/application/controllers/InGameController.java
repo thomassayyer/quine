@@ -1,30 +1,29 @@
 package application.controllers;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import application.models.Card;
 import application.models.Partner;
-import application.models.Prize;
 import application.models.Storable;
 import application.repositories.CardRepository;
 import application.repositories.PrizeRepository;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
+import javafx.scene.control.TitledPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.net.URL;
+import java.util.*;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -70,11 +69,7 @@ public class InGameController extends Controller implements Initializable, Stora
      * Cartons de la partie
      */
 	private List<Card> cards;
-  
-  /**
-   * Liste des cartons des joueurs absents
-     */
-	private List<Card> absentBuyerCard;
+
 
     /**
      * Liste des nombres
@@ -87,11 +82,6 @@ public class InGameController extends Controller implements Initializable, Stora
 	private List<Partner> partners;
 
     /**
-     * Liste des prix
-     */
-	private List<Prize> prizes;
-
-  /**
      * CardRepository
      */
 	private CardRepository cardRepository;
@@ -250,8 +240,45 @@ public class InGameController extends Controller implements Initializable, Stora
 		}
     }
 
+    
+    private void writeInPDF(Document document) throws DocumentException {
+    	 HashMap<String, Integer> map = new HashMap<String, Integer>();
+    	 PdfPTable table = new PdfPTable(2);
+    	 PdfPCell sellerColumn = new PdfPCell();
+    	 PdfPCell cardNumber = new PdfPCell();
+    	 sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
+    	 cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
+    	 table.addCell(sellerColumn);
+    	 table.addCell(sellerColumn);
+    	 table.setHeaderRows(1);
+    	 Collections.sort(this.cards, new Comparator<Card>() {
+
+			@Override
+			public int compare(Card o1, Card o2) {
+				
+				return o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName());
+			}
+		});
+    	 for (Card card : cards) {
+			table.addCell(card.getSeller().getName());
+			table.addCell(Integer.toString(card.getId()));
+		}
+    	 document.add(table);
+    }
+    
+    private void createPdf() throws FileNotFoundException, DocumentException {
+    	Document document = new Document();
+    	 PdfWriter.getInstance(document, new FileOutputStream(""));
+    	 document.open();
+    	 this.writeInPDF(document);
+    	 document.close();
+    }
+    // TODO: Pop-up Carton absent gagnant.
+
+
     @Override
     public int getId() {
         return 1;
     }
+
 }

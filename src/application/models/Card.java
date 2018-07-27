@@ -43,7 +43,7 @@ public class Card extends Model implements Storable {
     public Card(int id, int[][] grid, Buyer buyer, Seller seller) {
         this(id, grid);
         this.buyer = buyer;
-        this.seller = seller;
+        this.setSeller(seller);
         this.filledGrid = new int[3][5];
     }
 
@@ -174,6 +174,12 @@ public class Card extends Model implements Storable {
     public String toString() {
         return Integer.toString(getId());
     }
+
+	public Seller getSeller() {
+		return seller;
+	}
+
+
 
     /**
      * Renvoie true si une ligne est rempli
