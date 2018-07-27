@@ -1,34 +1,23 @@
 package application.controllers;
 
-import application.models.Buyer;
-import application.models.Card;
-import application.models.Partner;
-import application.models.Seller;
+import application.models.*;
 import application.repositories.CardRepository;
 import application.repositories.GameRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javax.imageio.ImageIO;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Node;
-import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.io.File;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -56,6 +45,11 @@ public class SettingsController extends Controller implements Initializable {
      * Liste des partenaires ajoutés à la prochaine partie.
      */
     private List<Partner> addedPartners;
+
+    /**
+     * Liste des lots ajoutés à la prochaine partie.
+     */
+    private List<Prize> addedPrizes;
 
     /**
      * Chemin absolue du logo du partenaire
@@ -126,7 +120,42 @@ public class SettingsController extends Controller implements Initializable {
      * Conteneur des partenaires déjà ajoutés à la prochaine partie
      */
     @FXML
-    private TitledPane partnersPane;
+    private HBox partnersPane;
+
+    /**
+     * Conteneur des cartons ajoutés à la prochaine partie
+     */
+    @FXML
+    private HBox cardsPane;
+
+    /**
+     * Champ contenant le numéro du lot à créer.
+     */
+    @FXML
+    private TextField prizeNumberField;
+
+    /**
+     * Champ contenant le libellé du lot à créer.
+     */
+    @FXML
+    private TextField prizeLabelField;
+
+    /**
+     * Menu déroulant contenant les partenaires lors de la création de lots.
+     */
+    @FXML
+    private ChoiceBox<Partner> partnersChoiceBox;
+
+    /**
+     * Contient les lots ajoutés à la prochaine partie.
+     */
+    @FXML
+    private HBox prizesPane;
+
+    /**
+     * Grille vide.
+     */
+    private int[][] emptyGrid;
 
     /**
      * Constructeur non paramétré de la classe {@link SettingsController}
@@ -136,6 +165,14 @@ public class SettingsController extends Controller implements Initializable {
         games = GameRepository.getInstance();
         addedCards = new ArrayList<>();
         addedPartners = new ArrayList<>();
+        addedPrizes = new ArrayList<>();
+        emptyGrid = new int[3][5];
+
+        for (int i = 0; i < emptyGrid.length; i++) {
+            for (int j = 0; j < emptyGrid[i].length; j++) {
+                emptyGrid[i][j] = 0;
+            }
+        }
     }
 
     @Override
@@ -168,6 +205,7 @@ public class SettingsController extends Controller implements Initializable {
                 int value = 0;
                 if (textField != null) {
                     value = Integer.parseInt(textField.getText());
+                    textField.clear();
                 }
                 grid[i][j] = value;
             }
@@ -184,6 +222,8 @@ public class SettingsController extends Controller implements Initializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        newCardId.clear();
     }
 
     /**
@@ -244,6 +284,12 @@ public class SettingsController extends Controller implements Initializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        addCardGrid.getChildren().clear();
+        buyerTextField.clear();
+        buyerPresentCheckBox.setSelected(false);
+        sellerTextField.clear();
+        cardsPane.getChildren().add(new Label(String.valueOf(cardSelected.getId())));
     }
 
     /**
@@ -260,9 +306,8 @@ public class SettingsController extends Controller implements Initializable {
         //Show open file dialog
         File file = fileChooser.showOpenDialog(null);
 
-        imagePath = file.toURI().toString();
-
         if (file != null) {
+            imagePath = file.toURI().toString();
             Image imageLogo = new Image(imagePath);
             partnerLogoViewer.setImage(imageLogo);
             addLogoButton.setText(file.getName());
@@ -276,8 +321,6 @@ public class SettingsController extends Controller implements Initializable {
         String partnersName = partnerNameTextField.getText();
         String pathLogoPartner = this.imagePath;
 
-        System.out.println(pathLogoPartner);
-
         Partner partner = new Partner(partnersName, pathLogoPartner);
 
         addedPartners.add(partner);
@@ -285,14 +328,42 @@ public class SettingsController extends Controller implements Initializable {
         // Clear the input
         partnerNameTextField.clear();
         partnerLogoViewer.setImage(null);
+        addLogoButton.setText("Logo");
+        partnersPane.getChildren().add(new Label(partner.getName()));
+
+        reloadPartnersChoiceBox();
     }
 
     /**
      * Action du bouton "sauvegarde"
      */
     public void onSave() {
-        InGameController controller = new InGameController(addedCards, addedPartners);
+        InGameController controller = new InGameController(addedCards, addedPartners, addedPrizes);
         games.store(controller);
+    }
+
+    /**
+     * Action lors du clic sur le bouton "Créer le lot".
+     */
+    public void onAddPrize() {
+        Prize p = new Prize(Integer.parseInt(prizeNumberField.getText()), prizeLabelField.getText(), partnersChoiceBox.getValue());
+        addedPrizes.add(p);
+        prizesPane.getChildren().add(new Label(String.valueOf(p.getId())));
+
+        prizeNumberField.clear();
+        prizeLabelField.clear();
+        partnersChoiceBox.setValue(null);
+    }
+
+    /**
+     * Recharge la liste des partnaires lors de l'ajout de lots.
+     */
+    private void reloadPartnersChoiceBox() {
+        partnersChoiceBox.getItems().clear();
+
+        for (Partner p : addedPartners) {
+            partnersChoiceBox.getItems().add(p);
+        }
     }
 
     /**

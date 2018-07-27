@@ -1,10 +1,15 @@
 package application.controllers;
 
 import application.repositories.GameRepository;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -31,17 +36,36 @@ public class HomeController extends Controller {
 	 * Lancement du jeu de quine.
 	 */
 	public void onPlay() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Jouer automatiquement les cartons des absents ?", ButtonType.YES, ButtonType.NO);
+        alert.showAndWait();
+
+        boolean playForAbsents = alert.getResult() == ButtonType.YES;
+
         try {
             Stage stage = new Stage();
             stage.setTitle("Quine - En jeu");
 
             FXMLLoader root = new FXMLLoader(getClass().getResource("../../ui/views/InGame.fxml"));
+
+            InGameController controller = null;
             if (games.exists(1)) {
-                root.setController(games.find(1));
+                controller = games.find(1);
+                controller.setPlayForAbsents(playForAbsents);
             }
+
+            root.setController(controller);
             root.setRoot(null);
 
-            stage.setScene(new Scene(root.load(), 1280, 1080));
+            Scene scene = new Scene(root.load(), 1280, 1080);
+            scene.setOnKeyReleased(event -> {
+                if (event.getCode() == KeyCode.A) {
+                    ((InGameController)root.getController()).removeLastNumber();
+                } else if (event.getCode() == KeyCode.R) {
+                    ((InGameController)root.getController()).clear();
+                }
+            });
+
+            stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
         } catch (IOException | ClassNotFoundException e) {

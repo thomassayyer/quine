@@ -13,4 +13,11 @@ public interface Storable extends Serializable {
      * @return Identifiant unique de l'objet à stocker
      */
     int getId();
+
+    /**
+     * S'exécute avant la sérialization de l'objet.
+     */
+    default void beforeSerialization() {
+        //
+    }
 }

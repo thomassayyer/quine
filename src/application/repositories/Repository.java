@@ -35,6 +35,7 @@ public abstract class Repository<M extends Storable> {
         File file = new File(basePath + "/" + specificDir() + "/" + object.getId() + ".object");
 
         try (ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(file))) {
+            object.beforeSerialization();
             stream.writeObject(object);
         } catch (IOException e) {
             return false;

@@ -44,4 +44,9 @@ public class Partner extends Model implements Serializable {
         return logoFilepath;
     }
 
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }
