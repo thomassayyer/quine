@@ -1,113 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.layout.VBox?>
-
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.*?>
+
 <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8.0.162-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.SettingsController">
-      <TabPane>
-      <tabs>
-          <Tab closable="false" text="Créer un nouveau carton">
-              <content>
-                  <VBox alignment="TOP_CENTER" spacing="20">
-                      <TextField fx:id="newCardId">
-                          <VBox.margin>
-                              <Insets>
-                                  <top>20</top>
-                              </Insets>
-                          </VBox.margin>
-                      </TextField>
-                      <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="newCardGrid">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                      </GridPane>
-                      <Button text="Créer le carton" onAction="#onCreateCard" />
-                  </VBox>
-              </content>
-          </Tab>
-          <Tab closable="false" text="Ajouter un carton à la prochaine partie">
-              <content>
-                  <VBox alignment="TOP_CENTER" spacing="20">
-                      <Label text="N° du carton">
-                          <VBox.margin>
-                              <Insets>
-                                  <top>20</top>
-                                  <bottom>-15</bottom>
-                              </Insets>
-                          </VBox.margin>
-                      </Label>
-                      <ChoiceBox fx:id="cardsChoiceBox" onAction="#onSelectCard" />
-                      <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="addCardGrid" alignment="CENTER">
-                          <columnConstraints>
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                      </GridPane>
-                      <TextField promptText="Vendeur du carton" fx:id="sellerTextField" />
-                      <HBox alignment="CENTER">
-                          <TextField promptText="Acheteur du carton" fx:id="buyerTextField" />
-                          <CheckBox mnemonicParsing="false" text="Présent ?" fx:id="buyerPresentCheckBox">
-                              <HBox.margin>
-                                  <Insets>
-                                      <left>20</left>
-                                  </Insets>
-                              </HBox.margin>
-                          </CheckBox>
-                      </HBox>
-                      <Button mnemonicParsing="false" text="Ajouter le carton" onAction="#onAddCard">
-                          <VBox.margin>
-                              <Insets>
-                                  <bottom>20</bottom>
-                              </Insets>
-                          </VBox.margin>
-                      </Button>
-                  </VBox>
-              </content>
-          </Tab>
-          <Tab closable="false" text="Partenaires">
-              <content>
-                  <VBox spacing="20" alignment="CENTER">
-                      <TextField promptText="Nom du partenaire" fx:id="partnerNameTextField" />
-                      <Button mnemonicParsing="false" text="Logo" onAction="#onAddLogo" fx:id="addLogoButton" />
-                      <ImageView fx:id="partnerLogoViewer" fitHeight="150"/>
-                      <Button mnemonicParsing="false" text="Ajouter le partenaire" onAction="#onAddPartner" />
-                      <TitledPane text="Partenaires ajoutés" fx:id="partnersPane" />
-                  </VBox>
-              </content>
-          </Tab>
-      </tabs>
-      </TabPane>
+    <TabPane>
+        <Tab closable="false" text="Créer un nouveau carton">
+            <ScrollPane fitToWidth="true">
+                <VBox alignment="TOP_CENTER" spacing="20">
+                    <TextField fx:id="newCardId">
+                        <VBox.margin>
+                            <Insets>
+                                <top>20</top>
+                            </Insets>
+                        </VBox.margin>
+                    </TextField>
+                    <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="newCardGrid">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        </rowConstraints>
+                    </GridPane>
+                    <Button text="Créer le carton" onAction="#onCreateCard"/>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+        <Tab closable="false" text="Ajouter un carton à la prochaine partie">
+            <ScrollPane fitToWidth="true">
+                <VBox alignment="TOP_CENTER" spacing="20">
+                    <Label text="N° du carton">
+                        <VBox.margin>
+                            <Insets>
+                                <top>20</top>
+                                <bottom>-15</bottom>
+                            </Insets>
+                        </VBox.margin>
+                    </Label>
+                    <ChoiceBox fx:id="cardsChoiceBox" onAction="#onSelectCard"/>
+                    <GridPane gridLinesVisible="true" prefHeight="68.0" prefWidth="209.0" fx:id="addCardGrid"
+                              alignment="CENTER">
+                        <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        </rowConstraints>
+                    </GridPane>
+                    <TextField promptText="Vendeur du carton" fx:id="sellerTextField"/>
+                    <HBox alignment="CENTER">
+                        <TextField promptText="Acheteur du carton" fx:id="buyerTextField"/>
+                        <CheckBox mnemonicParsing="false" text="Présent ?" fx:id="buyerPresentCheckBox">
+                            <HBox.margin>
+                                <Insets>
+                                    <left>20</left>
+                                </Insets>
+                            </HBox.margin>
+                        </CheckBox>
+                    </HBox>
+                    <Button mnemonicParsing="false" text="Ajouter le carton" onAction="#onAddCard">
+                        <VBox.margin>
+                            <Insets>
+                                <bottom>20</bottom>
+                            </Insets>
+                        </VBox.margin>
+                    </Button>
+                    <TitledPane text="Cartons ajoutés">
+                        <ScrollPane fitToHeight="true">
+                            <HBox spacing="20" fx:id="cardsPane"/>
+                        </ScrollPane>
+                    </TitledPane>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+        <Tab closable="false" text="Partenaires">
+            <ScrollPane fitToWidth="true">
+                <VBox spacing="20" alignment="CENTER">
+                    <TextField promptText="Nom du partenaire" fx:id="partnerNameTextField"/>
+                    <Button mnemonicParsing="false" text="Logo" onAction="#onAddLogo" fx:id="addLogoButton"/>
+                    <ImageView fx:id="partnerLogoViewer" fitHeight="150" fitWidth="150" />
+                    <Button mnemonicParsing="false" text="Ajouter le partenaire" onAction="#onAddPartner"/>
+                    <TitledPane text="Partenaires ajoutés">
+                        <ScrollPane fitToHeight="true">
+                            <HBox spacing="20" fx:id="partnersPane"/>
+                        </ScrollPane>
+                    </TitledPane>
+                </VBox>
+            </ScrollPane>
+        </Tab>
+    </TabPane>
       <Button mnemonicParsing="false" text="Sauvegarder" onAction="#onSave">
            <VBox.margin>
                <Insets>

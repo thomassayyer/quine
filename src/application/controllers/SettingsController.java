@@ -8,27 +8,19 @@ import application.repositories.CardRepository;
 import application.repositories.GameRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.BoundingBox;
-import javafx.geometry.Bounds;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javax.imageio.ImageIO;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Node;
-import javafx.collections.ObservableList;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.io.File;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
@@ -126,7 +118,13 @@ public class SettingsController extends Controller implements Initializable {
      * Conteneur des partenaires déjà ajoutés à la prochaine partie
      */
     @FXML
-    private TitledPane partnersPane;
+    private HBox partnersPane;
+
+    /**
+     * Conteneur des cartons ajoutés à la prochaine partie
+     */
+    @FXML
+    private HBox cardsPane;
 
     /**
      * Constructeur non paramétré de la classe {@link SettingsController}
@@ -168,6 +166,7 @@ public class SettingsController extends Controller implements Initializable {
                 int value = 0;
                 if (textField != null) {
                     value = Integer.parseInt(textField.getText());
+                    textField.clear();
                 }
                 grid[i][j] = value;
             }
@@ -184,6 +183,8 @@ public class SettingsController extends Controller implements Initializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        newCardId.clear();
     }
 
     /**
@@ -244,6 +245,12 @@ public class SettingsController extends Controller implements Initializable {
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        addCardGrid.getChildren().clear();
+        buyerTextField.clear();
+        buyerPresentCheckBox.setSelected(false);
+        sellerTextField.clear();
+        cardsPane.getChildren().add(new Label(String.valueOf(cardSelected.getId())));
     }
 
     /**
@@ -260,9 +267,8 @@ public class SettingsController extends Controller implements Initializable {
         //Show open file dialog
         File file = fileChooser.showOpenDialog(null);
 
-        imagePath = file.toURI().toString();
-
         if (file != null) {
+            imagePath = file.toURI().toString();
             Image imageLogo = new Image(imagePath);
             partnerLogoViewer.setImage(imageLogo);
             addLogoButton.setText(file.getName());
@@ -276,8 +282,6 @@ public class SettingsController extends Controller implements Initializable {
         String partnersName = partnerNameTextField.getText();
         String pathLogoPartner = this.imagePath;
 
-        System.out.println(pathLogoPartner);
-
         Partner partner = new Partner(partnersName, pathLogoPartner);
 
         addedPartners.add(partner);
@@ -285,6 +289,8 @@ public class SettingsController extends Controller implements Initializable {
         // Clear the input
         partnerNameTextField.clear();
         partnerLogoViewer.setImage(null);
+        addLogoButton.setText("Logo");
+        partnersPane.getChildren().add(new Label(partner.getName()));
     }
 
     /**
