@@ -220,6 +220,8 @@ public class InGameController extends Controller implements Initializable, Stora
 		    // Ajoute les images dans la image view
             Image logo = new Image(partner.getLogoFilepath());
             ImageView logoView = new ImageView(logo);
+            logoView.setFitWidth(150);
+            logoView.setFitHeight(150);
             logoVBox.getChildren().addAll(logoView);
         }
 
