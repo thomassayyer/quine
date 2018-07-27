@@ -89,11 +89,6 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	private List<Partner> partners;
 
-    /**
-     * CardRepository
-     */
-	private CardRepository cardRepository;
-
 	/**
 	 * Type de partie : Carton plein ou ligne simple
 	 */
@@ -115,10 +110,16 @@ public class InGameController extends Controller implements Initializable, Stora
 	private List<VBox> wonContainers;
 
     /**
+     * Indique s'il faut jouer les cartons des absents automatiquement.
+     */
+	private boolean playForAbsents;
+
+    /**
      * Crée un nouveau contrôleur pour la vue "InGame.fxml".
      *
      * @param cards    Cartons à jouer
      * @param partners Partenaires ayant laissé un lot
+     * @param prizes   Lots à gagner
      */
 	public InGameController(List<Card> cards, List<Partner> partners, List<Prize> prizes) {
         this.cards = cards;
@@ -134,6 +135,15 @@ public class InGameController extends Controller implements Initializable, Stora
                 this.absentBuyerCards.add(card);
             }
         }
+    }
+
+    /**
+     * Configure la valeur de la propriété {@link #playForAbsents}.
+     *
+     * @param playForAbsents Indique s'il faut jouer automatiquement les cartons des absents.
+     */
+    public void setPlayForAbsents(boolean playForAbsents) {
+	    this.playForAbsents = playForAbsents;
     }
 
 	/**
@@ -250,6 +260,10 @@ public class InGameController extends Controller implements Initializable, Stora
      * @return Liste des cartons gagants
      */
 	private List<Card> fillAbsentBuyerCards(int number) {
+	    if (!this.playForAbsents) {
+	        return new ArrayList<>();
+        }
+
 	    List<Card> cards = new ArrayList<>();
 		for (Card card : absentBuyerCards) {
 			card.fill(number);
@@ -269,7 +283,11 @@ public class InGameController extends Controller implements Initializable, Stora
      * @return Liste des cartons dont le numéro a été supprimé
      */
 	private List<Card> unfillAbsentBuyerCards(int number) {
-	    List<Card> cards = new ArrayList<>();
+        if (!this.playForAbsents) {
+            return new ArrayList<>();
+        }
+
+        List<Card> cards = new ArrayList<>();
 	    for (Card card : absentBuyerCards) {
 	        card.unfill(number);
 	        if (this.type.equals(CARTON_PLEIN) && !card.cardDone()) {

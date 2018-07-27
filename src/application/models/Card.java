@@ -30,7 +30,7 @@ public class Card extends Model implements Storable {
     /**
      * Vendeur du carton
      */
-    private transient Seller seller;
+    private Seller seller;
 
     /**
      * Crée un nouveau carton.
@@ -231,6 +231,7 @@ public class Card extends Model implements Storable {
 
     @Override
     public void beforeSerialization() {
+        this.seller = null;
         this.buyer = null;
     }
 
