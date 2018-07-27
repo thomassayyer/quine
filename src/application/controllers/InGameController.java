@@ -91,11 +91,6 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	private List<Prize> prizes;
 
-    /**
-     * Liste des lots gagnés
-     */
-	private List<Prize> prizes;
-
   /**
      * CardRepository
      */
@@ -137,7 +132,7 @@ public class InGameController extends Controller implements Initializable, Stora
         }else{
             button.setStyle("-fx-background-color: #ff0000; ");
         }
-	    List<Card> wonCard = this.fillAbsentBuyerCard(number);
+	    List<Card> wonCard = this.fillAbsentBuyerCards(number);
         printWonCard(wonCard);
 	}
 

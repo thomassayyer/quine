@@ -1,9 +1,11 @@
 package application.models;
 
+import java.io.Serializable;
+
 /**
  * Représente une entreprise partenaire.
  */
-public class Partner extends Model {
+public class Partner extends Model implements Serializable {
 
     /**
      * Nom de l'entreprise partenaire

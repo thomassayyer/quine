@@ -35,8 +35,10 @@ public class HomeController extends Controller {
             Stage stage = new Stage();
             stage.setTitle("Quine - En jeu");
 
-            FXMLLoader root = FXMLLoader.load(getClass().getResource("../../ui/views/InGame.fxml"));
-            root.setController(games.find(1));
+            FXMLLoader root = new FXMLLoader(getClass().getResource("../../ui/views/InGame.fxml"));
+            if (games.exists(1)) {
+                root.setController(games.find(1));
+            }
             root.setRoot(null);
 
             stage.setScene(new Scene(root.load(), 1280, 1080));

@@ -25,12 +25,12 @@ public class Card extends Model implements Storable {
     /**
      * Acheteur du carton
      */
-    private Buyer buyer;
+    private transient Buyer buyer;
 
     /**
      * Vendeur du carton
      */
-    private Seller seller;
+    private transient Seller seller;
 
     /**
      * Crée un nouveau carton.

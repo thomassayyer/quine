@@ -120,4 +120,15 @@ public abstract class Repository<M extends Storable> {
 
         return true;
     }
+
+    /**
+     * Détermine si un objet existe dans le stockage interne.
+     *
+     * @param id ID de l'objet à trouver
+     *
+     * @return Vrai si l'objet a été trouvé; faux sinon
+     */
+    public boolean exists(int id) {
+        return new File(basePath + "/" + specificDir() + "/" + id + ".object").exists();
+    }
 }
