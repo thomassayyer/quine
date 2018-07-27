@@ -20,7 +20,7 @@ public class Card extends Model implements Storable {
     /**
      * Grille complétée
      */
-    private transient int[][] filledGrid;
+    private int[][] filledGrid;
 
     /**
      * Acheteur du carton
@@ -43,8 +43,7 @@ public class Card extends Model implements Storable {
     public Card(int id, int[][] grid, Buyer buyer, Seller seller) {
         this(id, grid);
         this.buyer = buyer;
-        this.setSeller(seller);
-        this.filledGrid = new int[3][5];
+        this.seller = seller;
     }
 
     /**
@@ -56,6 +55,13 @@ public class Card extends Model implements Storable {
     public Card(int id, int[][] grid) {
         this.id = id;
         this.grid = grid;
+        this.filledGrid = new int[3][5];
+
+        for (int i = 0; i < filledGrid.length; i++) {
+            for (int j = 0; j < filledGrid[i].length; j++) {
+                filledGrid[i][j] = 0;
+            }
+        }
     }
 
     @Override
@@ -93,6 +99,15 @@ public class Card extends Model implements Storable {
      */
     public void setSeller(Seller seller) {
         this.seller = seller;
+    }
+
+    /**
+     * Retourne la valeur de la propriété {@link #seller}.
+     *
+     * @return Vendeur du carton
+     */
+    public Seller getSeller() {
+        return seller;
     }
 
     /**
@@ -170,33 +185,23 @@ public class Card extends Model implements Storable {
         find(number).forEach(coordinate -> filledGrid[coordinate[0]][coordinate[1]] = 0);
     }
 
-    @Override
-    public String toString() {
-        return Integer.toString(getId());
-    }
-
-	public Seller getSeller() {
-		return seller;
-	}
-
-
-
     /**
      * Renvoie true si une ligne est rempli
      * @return
      */
     public boolean lineDone(){
-        for (int row = 0; row < filledGrid.length; row++) {
+        for (int[] columns : filledGrid) {
             int count = 0;
-            for (int column = 0; column < filledGrid[row].length; column++) {
-                if (filledGrid[row][column] == 1) {
-                    count ++;
+            for (int value : columns) {
+                if (value == 1) {
+                    count++;
                 }
             }
             if(count == 5){
                 return true;
             }
         }
+
         return false;
     }
 
@@ -217,6 +222,11 @@ public class Card extends Model implements Storable {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
     }
 
 }

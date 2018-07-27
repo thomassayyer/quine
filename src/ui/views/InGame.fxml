@@ -10,19 +10,19 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
     <VBox>
-        <TitledPane fx:id="winnersCardsPane" animated="false" minWidth="-Infinity" text="Cartons gagants">
+        <TitledPane animated="false" minWidth="-Infinity" text="Cartons gagants">
            <VBox.margin>
               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
            </VBox.margin>
+            <VBox fx:id="winnersCardsPane" spacing="20.0" />
         </TitledPane>
     </VBox>
     <VBox>
         <HBox>
             <Button text="Carton plein" fx:id="cartonPlein" onAction="#onChangeTypeToCartonPlein"/>
-            <Button text="Ligne simple" fx:id="ligneSimple" onAction="#onChangeTypeToLignSimple"/>
+            <Button text="[X] Ligne simple" fx:id="ligneSimple" onAction="#onChangeTypeToLignSimple"/>
         </HBox>
-        <GridPane gridLinesVisible="true" fx:id="grid">
-        </GridPane>
+        <GridPane gridLinesVisible="true" fx:id="grid" />
     </VBox>
     <VBox fx:id="logoVBox" />
 </HBox>

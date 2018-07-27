@@ -23,18 +23,7 @@ public class Prize extends Model implements Storable {
     /**
      * Partenaire fournisseur du lot
      */
-    private transient Partner partner;
-
-    /**
-     * Crée un nouveau lot (sans partenaire).
-     *
-     * @param id    ID du lot
-     * @param label Libellé du lot
-     */
-    public Prize(int id, String label) {
-        this.id = id;
-        this.label = label;
-    }
+    private Partner partner;
 
     /**
      * Crée un nouveau lot.
@@ -44,7 +33,8 @@ public class Prize extends Model implements Storable {
      * @param partner Partenaire fournisseur du lot
      */
     public Prize(int id, String label, Partner partner) {
-        this(id, label);
+        this.id = id;
+        this.label = label;
         this.partner = partner;
     }
 
@@ -67,5 +57,10 @@ public class Prize extends Model implements Storable {
      */
     public void setWinner(Buyer winner) {
         this.winner = winner;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(this.id);
     }
 }

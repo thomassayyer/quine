@@ -1,10 +1,13 @@
 package application.controllers;
 
 import application.repositories.GameRepository;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -41,7 +44,16 @@ public class HomeController extends Controller {
             }
             root.setRoot(null);
 
-            stage.setScene(new Scene(root.load(), 1280, 1080));
+            Scene scene = new Scene(root.load(), 1280, 1080);
+            scene.setOnKeyReleased(event -> {
+                if (event.getCode() == KeyCode.A) {
+                    ((InGameController)root.getController()).removeLastNumber();
+                } else if (event.getCode() == KeyCode.R) {
+                    ((InGameController)root.getController()).clear();
+                }
+            });
+
+            stage.setScene(scene);
             stage.setMaximized(true);
             stage.show();
         } catch (IOException | ClassNotFoundException e) {

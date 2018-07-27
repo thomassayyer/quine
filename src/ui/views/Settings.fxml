@@ -103,6 +103,21 @@
                 </VBox>
             </ScrollPane>
         </Tab>
+        <Tab closable="false" text="Lots">
+            <ScrollPane fitToWidth="true">
+                <VBox spacing="20" alignment="CENTER">
+                    <TextField promptText="Numéro du lot" fx:id="prizeNumberField" />
+                    <TextField promptText="Libellé du lot" fx:id="prizeLabelField" />
+                    <ChoiceBox fx:id="partnersChoiceBox" />
+                    <Button text="Ajouter le lot" onAction="#onAddPrize" />
+                    <TitledPane text="Lots ajoutés">
+                        <ScrollPane fitToHeight="true">
+                            <HBox spacing="10" fx:id="prizesPane" />
+                        </ScrollPane>
+                    </TitledPane>
+                </VBox>
+            </ScrollPane>
+        </Tab>
     </TabPane>
       <Button mnemonicParsing="false" text="Sauvegarder" onAction="#onSave">
            <VBox.margin>

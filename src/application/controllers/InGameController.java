@@ -1,23 +1,23 @@
 package application.controllers;
 
-import application.models.Card;
-import application.models.Partner;
-import application.models.Storable;
+import application.models.*;
 import application.repositories.CardRepository;
-import application.repositories.PrizeRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.control.Button;
-import javafx.scene.control.TitledPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -33,7 +33,7 @@ public class InGameController extends Controller implements Initializable, Stora
 	 * Panel des cartons gagnants
 	 */
     @FXML
-	private TitledPane winnersCardsPane;
+	private VBox winnersCardsPane;
 
     /**
 	 * Grid contenant l'ensemble de nombre possible
@@ -70,6 +70,16 @@ public class InGameController extends Controller implements Initializable, Stora
 	private List<Card> cards;
 
     /**
+     * Lots en jeu
+     */
+	private List<Prize> prizes;
+
+    /**
+     * Lots gagnés
+     */
+	private List<Prize> wonPrizes;
+
+    /**
      * Liste des nombres
      */
 	private LinkedList<Integer> numbers;
@@ -84,15 +94,10 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	private CardRepository cardRepository;
 
-    /**
-     * PrizeRepository
-     */
-	private PrizeRepository prizeRepository;
-
 	/**
 	 * Type de partie : Carton plein ou ligne simple
 	 */
-	private String type;
+	private String type = LIGNE_SIMPLE;
 
 	/**
 	 * Variable global "Carton Plein"
@@ -105,15 +110,24 @@ public class InGameController extends Controller implements Initializable, Stora
 	private static final String LIGNE_SIMPLE = "Ligne Simple";
 
     /**
+     * Contient l'ensemble des cartons gagnés.
+     */
+	private List<VBox> wonContainers;
+
+    /**
      * Crée un nouveau contrôleur pour la vue "InGame.fxml".
      *
      * @param cards    Cartons à jouer
      * @param partners Partenaires ayant laissé un lot
      */
-	public InGameController(List<Card> cards, List<Partner> partners) {
+	public InGameController(List<Card> cards, List<Partner> partners, List<Prize> prizes) {
         this.cards = cards;
         this.partners = partners;
+        this.prizes = prizes;
         this.absentBuyerCards = new ArrayList<>();
+        this.numbers = new LinkedList<>();
+        this.wonPrizes = new ArrayList<>();
+        this.wonContainers = new ArrayList<>();
 
         for (Card card : this.cards) {
             if (!card.getBuyer().isPresent()) {
@@ -129,13 +143,18 @@ public class InGameController extends Controller implements Initializable, Stora
 	 */
 	private void chooseNumber(int number) {
         Button button = this.getButtonByNum(number);
-        if(button != null && button.getStyle().equals("-fx-background-color: #ff0000; ")) {
-            button.setStyle("-fx-background-color: #000000; ");
+	    if (numbers.contains(number)) {
+            if (button != null) {
+                button.setStyle("");
+            }
+            removeNumber(number);
         } else {
-			if (button != null) {
-				button.setStyle("-fx-background-color: #ff0000; ");
-			}
-		}
+            if (button != null) {
+                button.setStyle("-fx-background-color: #ff0000; ");
+            }
+            numbers.add(number);
+        }
+
 	    List<Card> wonCard = this.fillAbsentBuyerCards(number);
         printWonCard(wonCard);
 	}
@@ -146,16 +165,33 @@ public class InGameController extends Controller implements Initializable, Stora
      * @param wonCard
      */
 	private void printWonCard(List<Card> wonCard){
-	    Node node = new VBox();
         for (Card card : wonCard) {
-            Node text = new Text("Le Carton n° " + card.toString() + " est gagnant pour " + this.type);
-            // TODO : POP UP DU GAGNANT
-            //winnersCardsPane.
-            //winnersCardsPane.setContent(node);
+            VBox container = new VBox();
+            container.setSpacing(10);
+            container.setAlignment(Pos.CENTER);
+            Node text = new Text("Le Carton n° " + card.getId() + " est gagnant pour " + this.type);
+            TextField cardIdTextField = new TextField(String.valueOf(card.getId()));
+            cardIdTextField.setVisible(false);
+            Label label = new Label("Lot gagné :");
+            ChoiceBox<Prize> prizeChoiceBox = new ChoiceBox<>();
+            reloadPrizeChoiceBoxes();
+            TitledPane wonPane = new TitledPane();
+            wonPane.setText("Lots gagnés");
+            HBox wonHBox = new HBox();
+            wonHBox.setSpacing(20);
+            wonPane.setContent(wonHBox);
+            Button addPrizeBtn = new Button("Ajouter");
+            addPrizeBtn.setOnAction(event -> {
+                onAddPrizeBtnAction();
+            });
+            container.getChildren().addAll(text, label, prizeChoiceBox, addPrizeBtn, wonPane, cardIdTextField);
+            wonContainers.add(container);
+            winnersCardsPane.getChildren().add(container);
+            reloadPrizeChoiceBoxes();
         }
     }
 
-	/*
+	/**
 	 * Getter d'un élément dans une grid en fonction de sa position
 	 *
 	 * @param number
@@ -166,8 +202,8 @@ public class InGameController extends Controller implements Initializable, Stora
 		int row = (number - (number%10)) / 10;
 		int column = number%10;
 		for (Node node : grid.getChildren()) {
-			Integer rowIndex = grid.getRowIndex(node);
-			Integer columnIndex = grid.getColumnIndex(node);
+			Integer rowIndex = GridPane.getRowIndex(node);
+			Integer columnIndex = GridPane.getColumnIndex(node);
 			if (rowIndex != null && columnIndex != null && rowIndex == row && columnIndex == column) {
 				return (Button) node;
 			}
@@ -180,6 +216,9 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	public void onChangeTypeToCartonPlein() {
 		this.type = CARTON_PLEIN;
+        cartonPlein.setText("[X] Carton plein");
+        ligneSimple.setText("Ligne simple");
+        clear();
 	}
 
     /**
@@ -187,7 +226,9 @@ public class InGameController extends Controller implements Initializable, Stora
      */
 	public void onChangeTypeToLignSimple() {
 		this.type = LIGNE_SIMPLE;
-	}
+        ligneSimple.setText("[X] Ligne simple");
+        cartonPlein.setText("Carton plein");
+    }
 
     /**
      * Remplie les cartons des joueurs absents
@@ -195,18 +236,37 @@ public class InGameController extends Controller implements Initializable, Stora
      * @return Liste des cartons gagants
      */
 	private List<Card> fillAbsentBuyerCards(int number) {
-	    List<Card> cards = new ArrayList<Card>();
+	    List<Card> cards = new ArrayList<>();
 		for (Card card : absentBuyerCards) {
 			card.fill(number);
-			if(this.type.equals(CARTON_PLEIN) || card.cardDone()){
+			if(this.type.equals(CARTON_PLEIN) && card.cardDone()){
                 cards.add(card);
             }
-            if(this.type.equals(LIGNE_SIMPLE) || card.lineDone()){
+            if(this.type.equals(LIGNE_SIMPLE) && card.lineDone()){
                 cards.add(card);
             }
 		}
 		return cards;
 	}
+
+    /**
+     * Vide un numéro des cartons des joueurs absents
+     * @param number numéro tiré
+     * @return Liste des cartons dont le numéro a été supprimé
+     */
+	private List<Card> unfillAbsentBuyerCards(int number) {
+	    List<Card> cards = new ArrayList<>();
+	    for (Card card : absentBuyerCards) {
+	        card.unfill(number);
+	        if (this.type.equals(CARTON_PLEIN) && !card.cardDone()) {
+	            cards.add(card);
+            }
+            if (this.type.equals(LIGNE_SIMPLE) && !card.lineDone()) {
+	            cards.add(card);
+            }
+        }
+        return cards;
+    }
 
 	/**
 	 * Initialise la partie
@@ -241,6 +301,107 @@ public class InGameController extends Controller implements Initializable, Stora
     @Override
     public int getId() {
         return 1;
+    }
+
+    /**
+     * Action lors du clic sur le bouton d'ajout d'un lot.
+     */
+    private void onAddPrizeBtnAction() {
+        for (VBox vb : wonContainers) {
+            ChoiceBox<Prize> choiceBox = null;
+            Buyer cardBuyer = null;
+            HBox hbox = null;
+            for (Node n : vb.getChildren()) {
+                if (n instanceof TextField && !n.isVisible()) {
+                    for (Card c : cards) {
+                        if (c.getId() == Integer.parseInt(((TextField)n).getText())) {
+                            cardBuyer = c.getBuyer();
+                        }
+                    }
+                }
+                if (n instanceof ChoiceBox) {
+                    choiceBox = (ChoiceBox<Prize>)n;
+                }
+                if (n instanceof TitledPane) {
+                    hbox = (HBox) ((TitledPane)n).getContent();
+                }
+            }
+
+            Prize wonPrize = null;
+            if (choiceBox != null) {
+                wonPrize = choiceBox.getValue();
+                wonPrize.setWinner(cardBuyer);
+            }
+            wonPrizes.add(wonPrize);
+            if (hbox != null && wonPrize != null) {
+                hbox.getChildren().add(new Label(String.valueOf(wonPrize.getId())));
+            }
+            if (choiceBox != null) {
+                choiceBox.getItems().remove(choiceBox.getValue());
+            }
+        }
+    }
+
+    /**
+     * Recharge les menus déroulants contenant les lots à gagner.
+     */
+    private void reloadPrizeChoiceBoxes() {
+        for (VBox vb : wonContainers) {
+            for (Node n : vb.getChildren()) {
+                if (n instanceof ChoiceBox) {
+                    ChoiceBox<Prize> prizeChoiceBox = (ChoiceBox<Prize>)n;
+                    prizeChoiceBox.getItems().clear();
+                    for (Prize p : prizes) {
+                        if (!wonPrizes.contains(p)) {
+                            prizeChoiceBox.getItems().add(p);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Supprime le dernier numéro sorti.
+     */
+    public void removeLastNumber() {
+        removeNumber(numbers.getLast());
+    }
+
+    /**
+     * Supprime un numéro et le remet en jeu.
+     *
+     * @param number
+     */
+    private void removeNumber(int number) {
+        Button btn = getButtonByNum(number);
+        if (btn != null) {
+            getButtonByNum(number).setStyle("");
+        }
+        numbers.remove((Object)number);
+        List<Card> cards = unfillAbsentBuyerCards(number);
+        for (Card c : cards) {
+            for (VBox vb : wonContainers) {
+                for (Node n : vb.getChildren()) {
+                    if (n instanceof TextField && !n.isVisible()) {
+                        if (Integer.parseInt(((TextField)n).getText()) == c.getId()) {
+                            vb.getChildren().clear();
+                            wonContainers.remove(vb);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Remet la partie à 0.
+     */
+    public void clear() {
+        for (int num : numbers) {
+            removeNumber(num);
+        }
     }
 
 }

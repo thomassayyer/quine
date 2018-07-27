@@ -1,9 +1,6 @@
 package application.controllers;
 
-import application.models.Buyer;
-import application.models.Card;
-import application.models.Partner;
-import application.models.Seller;
+import application.models.*;
 import application.repositories.CardRepository;
 import application.repositories.GameRepository;
 import javafx.fxml.FXML;
@@ -48,6 +45,11 @@ public class SettingsController extends Controller implements Initializable {
      * Liste des partenaires ajoutés à la prochaine partie.
      */
     private List<Partner> addedPartners;
+
+    /**
+     * Liste des lots ajoutés à la prochaine partie.
+     */
+    private List<Prize> addedPrizes;
 
     /**
      * Chemin absolue du logo du partenaire
@@ -127,6 +129,35 @@ public class SettingsController extends Controller implements Initializable {
     private HBox cardsPane;
 
     /**
+     * Champ contenant le numéro du lot à créer.
+     */
+    @FXML
+    private TextField prizeNumberField;
+
+    /**
+     * Champ contenant le libellé du lot à créer.
+     */
+    @FXML
+    private TextField prizeLabelField;
+
+    /**
+     * Menu déroulant contenant les partenaires lors de la création de lots.
+     */
+    @FXML
+    private ChoiceBox<Partner> partnersChoiceBox;
+
+    /**
+     * Contient les lots ajoutés à la prochaine partie.
+     */
+    @FXML
+    private HBox prizesPane;
+
+    /**
+     * Grille vide.
+     */
+    private int[][] emptyGrid;
+
+    /**
      * Constructeur non paramétré de la classe {@link SettingsController}
      */
     public SettingsController() {
@@ -134,6 +165,14 @@ public class SettingsController extends Controller implements Initializable {
         games = GameRepository.getInstance();
         addedCards = new ArrayList<>();
         addedPartners = new ArrayList<>();
+        addedPrizes = new ArrayList<>();
+        emptyGrid = new int[3][5];
+
+        for (int i = 0; i < emptyGrid.length; i++) {
+            for (int j = 0; j < emptyGrid[i].length; j++) {
+                emptyGrid[i][j] = 0;
+            }
+        }
     }
 
     @Override
@@ -291,14 +330,40 @@ public class SettingsController extends Controller implements Initializable {
         partnerLogoViewer.setImage(null);
         addLogoButton.setText("Logo");
         partnersPane.getChildren().add(new Label(partner.getName()));
+
+        reloadPartnersChoiceBox();
     }
 
     /**
      * Action du bouton "sauvegarde"
      */
     public void onSave() {
-        InGameController controller = new InGameController(addedCards, addedPartners);
+        InGameController controller = new InGameController(addedCards, addedPartners, addedPrizes);
         games.store(controller);
+    }
+
+    /**
+     * Action lors du clic sur le bouton "Créer le lot".
+     */
+    public void onAddPrize() {
+        Prize p = new Prize(Integer.parseInt(prizeNumberField.getText()), prizeLabelField.getText(), partnersChoiceBox.getValue());
+        addedPrizes.add(p);
+        prizesPane.getChildren().add(new Label(String.valueOf(p.getId())));
+
+        prizeNumberField.clear();
+        prizeLabelField.clear();
+        partnersChoiceBox.setValue(null);
+    }
+
+    /**
+     * Recharge la liste des partnaires lors de l'ajout de lots.
+     */
+    private void reloadPartnersChoiceBox() {
+        partnersChoiceBox.getItems().clear();
+
+        for (Partner p : addedPartners) {
+            partnersChoiceBox.getItems().add(p);
+        }
     }
 
     /**
