@@ -5,12 +5,6 @@ import application.models.Partner;
 import application.models.Storable;
 import application.repositories.CardRepository;
 import application.repositories.PrizeRepository;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -240,32 +234,6 @@ public class InGameController extends Controller implements Initializable, Stora
 				grid.add(button, column, row);
 			}
 		}
-    }
-
-    
-    private void writeInPDF(Document document) throws DocumentException {
-    	 PdfPTable table = new PdfPTable(2);
-    	 PdfPCell sellerColumn = new PdfPCell();
-    	 PdfPCell cardNumber = new PdfPCell();
-    	 sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
-    	 cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
-    	 table.addCell(sellerColumn);
-    	 table.addCell(sellerColumn);
-    	 table.setHeaderRows(1);
-    	 this.cards.sort((o1, o2) -> o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName()));
-    	 for (Card card : cards) {
-			table.addCell(card.getSeller().getName());
-			table.addCell(Integer.toString(card.getId()));
-		}
-    	 document.add(table);
-    }
-    
-    private void createPdf() throws FileNotFoundException, DocumentException {
-    	Document document = new Document();
-    	 PdfWriter.getInstance(document, new FileOutputStream(""));
-    	 document.open();
-    	 this.writeInPDF(document);
-    	 document.close();
     }
 
     @Override
