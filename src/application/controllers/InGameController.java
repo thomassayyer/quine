@@ -461,7 +461,7 @@ public class InGameController extends Controller implements Initializable, Stora
         table.addCell(cardNumber);
         table.setHeaderRows(1);
         Map<Seller, Stack<Integer>> sellersCards = new HashMap<>();
-        this.cards.sort((o1, o2) -> o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName()));
+        cards.sort(Comparator.comparingInt(Card::getId));
         for (Card card : cards) {
             boolean isSellerPresent = false;
             for (Map.Entry<Seller, Stack<Integer>> entry : sellersCards.entrySet()) {
