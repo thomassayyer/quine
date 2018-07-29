@@ -412,7 +412,7 @@ public class InGameController extends Controller implements Initializable, Stora
     private void removeNumber(int number) {
         Button btn = getButtonByNum(number);
         if (btn != null) {
-            getButtonByNum(number).setStyle("");
+            btn.setStyle("");
         }
         numbers.remove((Object)number);
         if (!numbers.isEmpty()) {
@@ -569,4 +569,3 @@ public class InGameController extends Controller implements Initializable, Stora
         Desktop.getDesktop().open(new File("winner.pdf"));
     }
 }
-

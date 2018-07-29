@@ -15,7 +15,7 @@ public abstract class Repository<M extends Storable> {
     /**
      * Chemin d'accès au dossier du stockage interne
      */
-    protected static final String basePath = System.getProperty("user.dir") + "/storage";
+    protected static final String basePath = "storage";
 
     /**
      * Retourne le dossier spécifique associée à l'entrepôt.

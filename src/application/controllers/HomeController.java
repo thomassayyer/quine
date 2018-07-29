@@ -1,19 +1,14 @@
 package application.controllers;
 
 import application.repositories.GameRepository;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
+import application.Main;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.itextpdf.text.DocumentException;
@@ -48,7 +43,7 @@ public class HomeController extends Controller {
             Stage stage = new Stage();
             stage.setTitle("Quine - En jeu");
 
-            FXMLLoader root = new FXMLLoader(getClass().getResource("../../ui/views/InGame.fxml"));
+            FXMLLoader root = new FXMLLoader(Main.class.getResource("views/InGame.fxml"));
 
             InGameController controller = null;
             if (games.exists(1)) {
@@ -95,7 +90,7 @@ public class HomeController extends Controller {
         try {
             Stage stage = new Stage();
             stage.setTitle("Quine - Configuration");
-            stage.setScene(new Scene(FXMLLoader.load(getClass().getResource("../../ui/views/Settings.fxml"))));
+            stage.setScene(new Scene(FXMLLoader.load(Main.class.getResource("views/Settings.fxml"))));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

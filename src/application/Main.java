@@ -1,3 +1,5 @@
+package application;
+
 import application.repositories.CardRepository;
 import application.repositories.GameRepository;
 import javafx.application.Application;
@@ -13,7 +15,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("ui/views/Home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/Home.fxml"));
         primaryStage.setTitle("Quine - Accueil");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.show();
