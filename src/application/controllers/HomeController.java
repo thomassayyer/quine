@@ -70,7 +70,6 @@ public class HomeController extends Controller {
                 	try {
 						((InGameController) root.getController()).createPdf();
 					} catch (FileNotFoundException | DocumentException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
                 }
