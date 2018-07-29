@@ -65,16 +65,18 @@ public class HomeController extends Controller {
                     ((InGameController)root.getController()).removeLastNumber();
                 } else if (event.getCode() == KeyCode.R) {
                     ((InGameController)root.getController()).clear();
-                }
-                else if (event.getCode() == KeyCode.P) {
+                } else if (event.getCode() == KeyCode.P) {
                 	try {
 						((InGameController) root.getController()).createPdf();
-					} catch (FileNotFoundException | DocumentException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
+					} catch (DocumentException | IOException e) {
 						e.printStackTrace();
 					}
+                } else if (event.getCode() == KeyCode.W) {
+                    try {
+                        ((InGameController) root.getController()).createWinnerPdf();
+                    } catch (DocumentException | IOException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
 

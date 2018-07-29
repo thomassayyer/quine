@@ -454,10 +454,17 @@ public class InGameController extends Controller implements Initializable, Stora
         }
     }
 
+    /**
+     * Ecrit les infomations concernant les ventes de cartons dans un document PDF.
+     *
+     * @param document Document dans lequel écrire
+     *
+     * @throws DocumentException Lorsque il est impossible d'écrire dans le document
+     */
     private void writeInPDF(Document document) throws DocumentException {
         PdfPTable table = new PdfPTable(2);
-        PdfPCell sellerColumn = new PdfPCell(new Phrase("Seller"));
-        PdfPCell cardNumber = new PdfPCell(new Phrase("Card number"));
+        PdfPCell sellerColumn = new PdfPCell(new Phrase("Vendeurs"));
+        PdfPCell cardNumber = new PdfPCell(new Phrase("Cartons"));
         sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
         cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(sellerColumn);
@@ -487,6 +494,12 @@ public class InGameController extends Controller implements Initializable, Stora
         document.add(table);
     }
 
+    /**
+     * Crée le fichier PDF associé à la vente de cartons.
+     *
+     * @throws DocumentException Lorsqu'il est impossible d'écrire dans le document PDF
+     * @throws IOException       Lorsqu'il est impossible de créer le fichier PDF
+     */
     public void createPdf() throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("sellersCards.pdf"));
@@ -495,48 +508,65 @@ public class InGameController extends Controller implements Initializable, Stora
         document.close();
         Desktop.getDesktop().open(new File("sellersCards.pdf"));
     }
-    
-    private void writeWinnerToPdf(Document document) throws DocumentException {
-    	 PdfPTable table = new PdfPTable(2);
-         PdfPCell winnerName = new PdfPCell(new Phrase("Winner name"));
-         PdfPCell Prize = new PdfPCell(new Phrase("Prize"));
-         winnerName.setHorizontalAlignment(Element.ALIGN_CENTER);
-         Prize.setHorizontalAlignment(Element.ALIGN_CENTER);
-         table.addCell(winnerName);
-         table.addCell(Prize);
-         table.setHeaderRows(1);
-         
-         Map<String, Stack<Prize>> winner = new HashMap<>();
-        
-         for (Prize prize : wonPrizes) {
-             boolean isSellerPresent = false;
-             for (Map.Entry<String, Stack<Prize>> entry : winner.entrySet()) {
-                 if (entry.getKey().equals(prize.getWinner().getName())) {
-                     entry.getValue().add(prize);
-                     isSellerPresent = true;
-                     break;
-                 }
-             }
-             if (!isSellerPresent) {
-                 Stack<Prize> prizeWon = new Stack<>();
-                 prizeWon.add(prize);
-                 winner.put(prize.getWinner().getName(), prizeWon);
-             }
-         }
-         for (Map.Entry<String, Stack<Prize>> entry : winner.entrySet()) {
-             table.addCell(entry.getKey());
-             table.addCell(entry.getValue().firstElement() + " " + entry.getValue().lastElement());
-         }
-         document.add(table);
-     }
 
-    public void createWinnerPdf() throws FileNotFoundException, DocumentException {
-    	 Document document = new Document();
-         PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("winner.pdf"));
-         document.open();
-         this.writeWinnerToPdf(document);
-         document.close();
-                  
+    /**
+     * Ecrit dans un document PDF les informations concernant les lots gagnés.
+     *
+     * @param document Document PDF dans lequel écrire
+     *
+     * @throws DocumentException Lorsqu'il est impossible d'écrire dans le document PDF
+     */
+    private void writeWinnerToPdf(Document document) throws DocumentException {
+        PdfPTable table = new PdfPTable(2);
+        PdfPCell winnerName = new PdfPCell(new Phrase("Gagnants"));
+        PdfPCell Prize = new PdfPCell(new Phrase("Lots"));
+        winnerName.setHorizontalAlignment(Element.ALIGN_CENTER);
+        Prize.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(winnerName);
+        table.addCell(Prize);
+        table.setHeaderRows(1);
+
+        Map<String, Stack<Prize>> winner = new HashMap<>();
+
+        for (Prize prize : wonPrizes) {
+            boolean isSellerPresent = false;
+            for (Map.Entry<String, Stack<Prize>> entry : winner.entrySet()) {
+                if (entry.getKey().equals(prize.getWinner().getName())) {
+                    entry.getValue().add(prize);
+                    isSellerPresent = true;
+                    break;
+                }
+            }
+            if (!isSellerPresent) {
+                Stack<Prize> prizeWon = new Stack<>();
+                prizeWon.add(prize);
+                winner.put(prize.getWinner().getName(), prizeWon);
+            }
+        }
+        for (Map.Entry<String, Stack<Prize>> entry : winner.entrySet()) {
+            table.addCell(entry.getKey());
+            StringBuilder prizes = new StringBuilder();
+            for (Prize p : entry.getValue()) {
+                prizes.append(p.getId()).append(" | ").append(p.getLabel()).append("\n");
+            }
+            table.addCell(prizes.toString());
+        }
+        document.add(table);
+    }
+
+    /**
+     * Crée le fichier PDF associé aux lots gagnés.
+     *
+     * @throws DocumentException Lorsqu'il est impossible d'écrire dans le document PDF
+     * @throws IOException       Lorsqu'il est impossible de créer le fichier PDF
+     */
+    public void createWinnerPdf() throws DocumentException, IOException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("winner.pdf"));
+        document.open();
+        this.writeWinnerToPdf(document);
+        document.close();
+        Desktop.getDesktop().open(new File("winner.pdf"));
     }
 }
 
