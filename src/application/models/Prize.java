@@ -67,6 +67,10 @@ public class Prize extends Model implements Storable {
     public Buyer getWinner() {
         return winner;
     }
+    
+    public String getLabel() {
+    	return this.label;
+    }
 
     @Override
     public String toString() {

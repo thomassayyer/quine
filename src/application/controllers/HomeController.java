@@ -72,6 +72,9 @@ public class HomeController extends Controller {
 					} catch (FileNotFoundException | DocumentException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
                 }
             });

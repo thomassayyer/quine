@@ -20,8 +20,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
@@ -484,12 +487,56 @@ public class InGameController extends Controller implements Initializable, Stora
         document.add(table);
     }
 
-    public void createPdf() throws FileNotFoundException, DocumentException {
+    public void createPdf() throws DocumentException, IOException {
         Document document = new Document();
         PdfWriter.getInstance(document, new FileOutputStream("sellersCards.pdf"));
         document.open();
         this.writeInPDF(document);
         document.close();
+        Desktop.getDesktop().open(new File("sellersCards.pdf"));
     }
+    
+    private void writeWinnerToPdf(Document document) throws DocumentException {
+    	 PdfPTable table = new PdfPTable(2);
+         PdfPCell winnerName = new PdfPCell(new Phrase("Winner name"));
+         PdfPCell Prize = new PdfPCell(new Phrase("Prize"));
+         winnerName.setHorizontalAlignment(Element.ALIGN_CENTER);
+         Prize.setHorizontalAlignment(Element.ALIGN_CENTER);
+         table.addCell(winnerName);
+         table.addCell(Prize);
+         table.setHeaderRows(1);
+         
+         Map<String, Stack<Prize>> winner = new HashMap<>();
+        
+         for (Prize prize : wonPrizes) {
+             boolean isSellerPresent = false;
+             for (Map.Entry<String, Stack<Prize>> entry : winner.entrySet()) {
+                 if (entry.getKey().equals(prize.getWinner().getName())) {
+                     entry.getValue().add(prize);
+                     isSellerPresent = true;
+                     break;
+                 }
+             }
+             if (!isSellerPresent) {
+                 Stack<Prize> prizeWon = new Stack<>();
+                 prizeWon.add(prize);
+                 winner.put(prize.getWinner().getName(), prizeWon);
+             }
+         }
+         for (Map.Entry<String, Stack<Prize>> entry : winner.entrySet()) {
+             table.addCell(entry.getKey());
+             table.addCell(entry.getValue().firstElement() + " " + entry.getValue().lastElement());
+         }
+         document.add(table);
+     }
 
+    public void createWinnerPdf() throws FileNotFoundException, DocumentException {
+    	 Document document = new Document();
+         PdfWriter pdfWriter = PdfWriter.getInstance(document, new FileOutputStream("winner.pdf"));
+         document.open();
+         this.writeWinnerToPdf(document);
+         document.close();
+                  
+    }
 }
+
