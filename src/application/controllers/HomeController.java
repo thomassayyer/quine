@@ -13,7 +13,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import com.itextpdf.text.DocumentException;
 
 /**
  * Contrôleur de la vue accueil.
@@ -62,6 +65,14 @@ public class HomeController extends Controller {
                     ((InGameController)root.getController()).removeLastNumber();
                 } else if (event.getCode() == KeyCode.R) {
                     ((InGameController)root.getController()).clear();
+                }
+                else if (event.getCode() == KeyCode.P) {
+                	try {
+						((InGameController) root.getController()).createPdf();
+					} catch (FileNotFoundException | DocumentException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
                 }
             });
 

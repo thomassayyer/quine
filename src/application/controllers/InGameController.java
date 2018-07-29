@@ -13,11 +13,24 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -444,5 +457,38 @@ public class InGameController extends Controller implements Initializable, Stora
             removeNumber(num);
         }
     }
+    
+    private void writeInPDF(Document document) throws DocumentException {
+   	 PdfPTable table = new PdfPTable(2);
+   	 PdfPCell sellerColumn = new PdfPCell(new Phrase("Seller"));
+   	 PdfPCell cardNumber = new PdfPCell(new Phrase("Card number"));
+   	 sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
+   	 cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
+   	 table.addCell(sellerColumn);
+   	 table.addCell(cardNumber);
+   	 table.setHeaderRows(1);
+   	 Collections.sort(this.cards, new Comparator<Card>() {
+
+			@Override
+			public int compare(Card o1, Card o2) {
+				
+				return o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName());
+			}
+		});
+   	 for (Card card : cards) {
+   		 	System.out.println(card.getId());
+			table.addCell(card.getSeller().getName());
+			table.addCell(Integer.toString(card.getId()));
+		}
+   	 document.add(table);
+   }
+   
+   public void createPdf() throws FileNotFoundException, DocumentException {
+   	Document document = new Document();
+   	 PdfWriter.getInstance(document, new FileOutputStream("game.pdf"));
+   	 document.open();
+   	 this.writeInPDF(document);
+   	 document.close();
+}
 
 }
