@@ -111,6 +111,8 @@ public abstract class Repository<M extends Storable> {
 
     /**
      * Crée le répertoire spécifique au repository.
+     *
+     * @return Vrai si le répertoire a été créé; faux sinon
      */
     public boolean makeSpecificDir() {
         File directory = new File(basePath + "/" + specificDir());

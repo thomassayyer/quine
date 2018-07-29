@@ -187,7 +187,8 @@ public class Card extends Model implements Storable {
 
     /**
      * Renvoie true si une ligne est rempli
-     * @return
+     *
+     * @return Vrai si le carton est gagnant d'un quine; faux sinon
      */
     public boolean lineDone(){
         for (int[] columns : filledGrid) {
@@ -206,8 +207,9 @@ public class Card extends Model implements Storable {
     }
 
     /**
-     * Renvoie true si le carton est rempli
-     * @return
+     * Renvoie true si le carton est rempli.
+     *
+     * @return Vrai si le carton est gagnant d'un "Carton plein"; faux sinon
      */
     public boolean cardDone(){
         int count = 0;
