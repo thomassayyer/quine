@@ -1,6 +1,13 @@
 package application.controllers;
 
 import application.models.*;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -16,50 +23,36 @@ import javafx.scene.text.Text;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.ResourceBundle;
-
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import java.util.*;
 
 /**
  * Contrôleur de la page "En jeu".
  */
 public class InGameController extends Controller implements Initializable, Storable {
 
-	/**
-	 * Panel des cartons gagnants
-	 */
-    @FXML
-	private VBox winnersCardsPane;
-
     /**
-	 * Grid contenant l'ensemble de nombre possible
+     * Panel des cartons gagnants
      */
     @FXML
-	private GridPane grid;
+    private VBox winnersCardsPane;
 
-	/**
-	 * Button option CartonPlein
-	 */
-	@FXML
-	private Button cartonPlein;
-
-	/**
-	 * Button option LigneSimple
-	 */
+    /**
+     * Grid contenant l'ensemble de nombre possible
+     */
     @FXML
-	private Button ligneSimple;
+    private GridPane grid;
+
+    /**
+     * Button option CartonPlein
+     */
+    @FXML
+    private Button cartonPlein;
+
+    /**
+     * Button option LigneSimple
+     */
+    @FXML
+    private Button ligneSimple;
 
     /**
      * Image view pour les logos
@@ -70,57 +63,57 @@ public class InGameController extends Controller implements Initializable, Stora
     /**
      * Liste des cartons de joueurs absent
      */
-	private List<Card> absentBuyerCards;
+    private List<Card> absentBuyerCards;
 
     /**
      * Cartons de la partie
      */
-	private List<Card> cards;
+    private List<Card> cards;
 
     /**
      * Lots en jeu
      */
-	private List<Prize> prizes;
+    private List<Prize> prizes;
 
     /**
      * Lots gagnés
      */
-	private List<Prize> wonPrizes;
+    private List<Prize> wonPrizes;
 
     /**
      * Liste des nombres
      */
-	private LinkedList<Integer> numbers;
+    private LinkedList<Integer> numbers;
 
     /**
      * Liste des partenaires
      */
-	private List<Partner> partners;
+    private List<Partner> partners;
 
-	/**
-	 * Type de partie : Carton plein ou ligne simple
-	 */
-	private String type = LIGNE_SIMPLE;
+    /**
+     * Type de partie : Carton plein ou ligne simple
+     */
+    private String type = LIGNE_SIMPLE;
 
-	/**
-	 * Variable global "Carton Plein"
-	 */
-	private static final String CARTON_PLEIN = "Carton Plein";
+    /**
+     * Variable global "Carton Plein"
+     */
+    private static final String CARTON_PLEIN = "Carton Plein";
 
-	/**
-	 * Variable global "Ligne Simple"
-	 */
-	private static final String LIGNE_SIMPLE = "Ligne Simple";
+    /**
+     * Variable global "Ligne Simple"
+     */
+    private static final String LIGNE_SIMPLE = "Ligne Simple";
 
     /**
      * Contient l'ensemble des cartons gagnés.
      */
-	private List<VBox> wonContainers;
+    private List<VBox> wonContainers;
 
     /**
      * Indique s'il faut jouer les cartons des absents automatiquement.
      */
-	private boolean playForAbsents;
+    private boolean playForAbsents;
 
     /**
      * Crée un nouveau contrôleur pour la vue "InGame.fxml".
@@ -129,7 +122,7 @@ public class InGameController extends Controller implements Initializable, Stora
      * @param partners Partenaires ayant laissé un lot
      * @param prizes   Lots à gagner
      */
-	public InGameController(List<Card> cards, List<Partner> partners, List<Prize> prizes) {
+    public InGameController(List<Card> cards, List<Partner> partners, List<Prize> prizes) {
         this.cards = cards;
         this.partners = partners;
         this.prizes = prizes;
@@ -151,17 +144,17 @@ public class InGameController extends Controller implements Initializable, Stora
      * @param playForAbsents Indique s'il faut jouer automatiquement les cartons des absents.
      */
     public void setPlayForAbsents(boolean playForAbsents) {
-	    this.playForAbsents = playForAbsents;
+        this.playForAbsents = playForAbsents;
     }
 
-	/**
-	 * Renseigne le numéro sorti dans la liste
-	 *
-	 * @param number numéro sorti
-	 */
-	private void chooseNumber(int number) {
+    /**
+     * Renseigne le numéro sorti dans la liste
+     *
+     * @param number numéro sorti
+     */
+    private void chooseNumber(int number) {
         Button button = this.getButtonByNum(number);
-	    if (numbers.contains(number)) {
+        if (numbers.contains(number)) {
             removeNumber(number);
         } else {
             for (int i : numbers) {
@@ -176,16 +169,16 @@ public class InGameController extends Controller implements Initializable, Stora
             numbers.add(number);
         }
 
-	    List<Card> wonCard = this.fillAbsentBuyerCards(number);
+        List<Card> wonCard = this.fillAbsentBuyerCards(number);
         printWonCard(wonCard);
-	}
+    }
 
 
     /**
      * Affiche les cartons gagnants
      * @param wonCard
      */
-	private void printWonCard(List<Card> wonCard){
+    private void printWonCard(List<Card> wonCard){
         for (Card card : wonCard) {
             boolean alreadyWon = false;
             for (VBox vb : wonContainers) {
@@ -225,39 +218,39 @@ public class InGameController extends Controller implements Initializable, Stora
         }
     }
 
-	/**
-	 * Getter d'un élément dans une grid en fonction de sa position
-	 *
-	 * @param number
-	 *
-	 * @return L'élément souhaité
-	 */
-	private Button getButtonByNum (int number) {
-	    for (Node n : grid.getChildren()) {
-	        if (n instanceof Button) {
+    /**
+     * Getter d'un élément dans une grid en fonction de sa position
+     *
+     * @param number
+     *
+     * @return L'élément souhaité
+     */
+    private Button getButtonByNum (int number) {
+        for (Node n : grid.getChildren()) {
+            if (n instanceof Button) {
                 if (Integer.parseInt(((Button)n).getText()) == number) {
                     return (Button)n;
                 }
             }
         }
         return null;
-	}
+    }
 
     /**
      * Button changement de partie en mode Carton Plein
      */
-	public void onChangeTypeToCartonPlein() {
-		this.type = CARTON_PLEIN;
+    public void onChangeTypeToCartonPlein() {
+        this.type = CARTON_PLEIN;
         cartonPlein.setText("[X] Carton plein");
         ligneSimple.setText("Ligne simple");
         clear();
-	}
+    }
 
     /**
      * Button changement de partie en mode Ligne simple
      */
-	public void onChangeTypeToLignSimple() {
-		this.type = LIGNE_SIMPLE;
+    public void onChangeTypeToLignSimple() {
+        this.type = LIGNE_SIMPLE;
         ligneSimple.setText("[X] Ligne simple");
         cartonPlein.setText("Carton plein");
     }
@@ -267,57 +260,57 @@ public class InGameController extends Controller implements Initializable, Stora
      * @param number numéro tiré
      * @return Liste des cartons gagants
      */
-	private List<Card> fillAbsentBuyerCards(int number) {
-	    if (!this.playForAbsents) {
-	        return new ArrayList<>();
+    private List<Card> fillAbsentBuyerCards(int number) {
+        if (!this.playForAbsents) {
+            return new ArrayList<>();
         }
 
-	    List<Card> cards = new ArrayList<>();
-		for (Card card : absentBuyerCards) {
-			card.fill(number);
-			if(this.type.equals(CARTON_PLEIN) && card.cardDone()){
+        List<Card> cards = new ArrayList<>();
+        for (Card card : absentBuyerCards) {
+            card.fill(number);
+            if(this.type.equals(CARTON_PLEIN) && card.cardDone()){
                 cards.add(card);
             }
             if(this.type.equals(LIGNE_SIMPLE) && card.lineDone()){
                 cards.add(card);
             }
-		}
-		return cards;
-	}
+        }
+        return cards;
+    }
 
     /**
      * Vide un numéro des cartons des joueurs absents
      * @param number numéro tiré
      * @return Liste des cartons dont le numéro a été supprimé
      */
-	private List<Card> unfillAbsentBuyerCards(int number) {
+    private List<Card> unfillAbsentBuyerCards(int number) {
         if (!this.playForAbsents) {
             return new ArrayList<>();
         }
 
         List<Card> cards = new ArrayList<>();
-	    for (Card card : absentBuyerCards) {
-	        card.unfill(number);
-	        if (this.type.equals(CARTON_PLEIN) && !card.cardDone()) {
-	            cards.add(card);
+        for (Card card : absentBuyerCards) {
+            card.unfill(number);
+            if (this.type.equals(CARTON_PLEIN) && !card.cardDone()) {
+                cards.add(card);
             }
             if (this.type.equals(LIGNE_SIMPLE) && !card.lineDone()) {
-	            cards.add(card);
+                cards.add(card);
             }
         }
         return cards;
     }
 
-	/**
-	 * Initialise la partie
-	 * @param location
-	 * @param resources
-	 */
+    /**
+     * Initialise la partie
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         for (Partner partner : partners){
-		    // Ajoute les images dans la image view
+            // Ajoute les images dans la image view
             Image logo = new Image(partner.getLogoFilepath());
             ImageView logoView = new ImageView(logo);
             logoView.setFitWidth(150);
@@ -325,17 +318,17 @@ public class InGameController extends Controller implements Initializable, Stora
             logoVBox.getChildren().addAll(logoView);
         }
 
-		// Initialise la grid
-		for (int column = 1; column < 11; column++) {
-			for (int row = 0; row < 9; row++) {
-				int number = 10 * row + column;
-				Button button = new Button(String.valueOf(number));
-				button.setOnAction(event -> {
-					this.chooseNumber(number);
-				});
-				grid.add(button, column, row);
-			}
-		}
+        // Initialise la grid
+        for (int column = 1; column < 11; column++) {
+            for (int row = 0; row < 9; row++) {
+                int number = 10 * row + column;
+                Button button = new Button(String.valueOf(number));
+                button.setOnAction(event -> {
+                    this.chooseNumber(number);
+                });
+                grid.add(button, column, row);
+            }
+        }
     }
 
     @Override
@@ -457,38 +450,46 @@ public class InGameController extends Controller implements Initializable, Stora
             removeNumber(num);
         }
     }
-    
-    private void writeInPDF(Document document) throws DocumentException {
-   	 PdfPTable table = new PdfPTable(2);
-   	 PdfPCell sellerColumn = new PdfPCell(new Phrase("Seller"));
-   	 PdfPCell cardNumber = new PdfPCell(new Phrase("Card number"));
-   	 sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
-   	 cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
-   	 table.addCell(sellerColumn);
-   	 table.addCell(cardNumber);
-   	 table.setHeaderRows(1);
-   	 Collections.sort(this.cards, new Comparator<Card>() {
 
-			@Override
-			public int compare(Card o1, Card o2) {
-				
-				return o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName());
-			}
-		});
-   	 for (Card card : cards) {
-   		 	System.out.println(card.getId());
-			table.addCell(card.getSeller().getName());
-			table.addCell(Integer.toString(card.getId()));
-		}
-   	 document.add(table);
-   }
-   
-   public void createPdf() throws FileNotFoundException, DocumentException {
-   	Document document = new Document();
-   	 PdfWriter.getInstance(document, new FileOutputStream("game.pdf"));
-   	 document.open();
-   	 this.writeInPDF(document);
-   	 document.close();
-}
+    private void writeInPDF(Document document) throws DocumentException {
+        PdfPTable table = new PdfPTable(2);
+        PdfPCell sellerColumn = new PdfPCell(new Phrase("Seller"));
+        PdfPCell cardNumber = new PdfPCell(new Phrase("Card number"));
+        sellerColumn.setHorizontalAlignment(Element.ALIGN_CENTER);
+        cardNumber.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(sellerColumn);
+        table.addCell(cardNumber);
+        table.setHeaderRows(1);
+        Map<Seller, Stack<Integer>> sellersCards = new HashMap<>();
+        this.cards.sort((o1, o2) -> o1.getSeller().getName().compareToIgnoreCase(o2.getSeller().getName()));
+        for (Card card : cards) {
+            boolean isSellerPresent = false;
+            for (Map.Entry<Seller, Stack<Integer>> entry : sellersCards.entrySet()) {
+                if (entry.getKey().equals(card.getSeller())) {
+                    entry.getValue().add(card.getId());
+                    isSellerPresent = true;
+                    break;
+                }
+            }
+            if (!isSellerPresent) {
+                Stack<Integer> cards = new Stack<>();
+                cards.add(card.getId());
+                sellersCards.put(card.getSeller(), cards);
+            }
+        }
+        for (Map.Entry<Seller, Stack<Integer>> entry : sellersCards.entrySet()) {
+            table.addCell(entry.getKey().getName());
+            table.addCell("Du carton n°" + entry.getValue().firstElement() + " au n°" + entry.getValue().lastElement());
+        }
+        document.add(table);
+    }
+
+    public void createPdf() throws FileNotFoundException, DocumentException {
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream("sellersCards.pdf"));
+        document.open();
+        this.writeInPDF(document);
+        document.close();
+    }
 
 }
