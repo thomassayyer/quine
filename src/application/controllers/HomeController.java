@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -40,47 +41,51 @@ public class HomeController extends Controller {
         boolean playForAbsents = alert.getResult() == ButtonType.YES;
 
         try {
-            Stage stage = new Stage();
-            stage.setTitle("Quine - En jeu");
-
-            FXMLLoader root = new FXMLLoader(Main.class.getResource("views/InGame.fxml"));
-
             InGameController controller = null;
             if (games.exists(1)) {
                 controller = games.find(1);
                 controller.setPlayForAbsents(playForAbsents);
             }
 
-            root.setController(controller);
-            root.setRoot(null);
-
-            Scene scene = new Scene(root.load(), 1280, 1080);
-            scene.setOnKeyReleased(event -> {
-                if (event.getCode() == KeyCode.A) {
-                    ((InGameController)root.getController()).removeLastNumber();
-                } else if (event.getCode() == KeyCode.R) {
-                    ((InGameController)root.getController()).clear();
-                } else if (event.getCode() == KeyCode.P) {
-                	try {
-						((InGameController) root.getController()).createPdf();
-					} catch (DocumentException | IOException e) {
-						e.printStackTrace();
-					}
-                } else if (event.getCode() == KeyCode.W) {
-                    try {
-                        ((InGameController) root.getController()).createWinnerPdf();
-                    } catch (DocumentException | IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-
-            stage.setScene(scene);
-            stage.setMaximized(true);
-            stage.show();
+            showInGameStage("InGamePlaying", controller);
+            showInGameStage("InGamePrizes", controller);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void showInGameStage(String view, InGameController controller) throws IOException {
+        Stage stage = new Stage();
+        stage.setTitle("Quine - En jeu");
+
+        FXMLLoader root = new FXMLLoader(Main.class.getResource("views/" + view + ".fxml"));
+        root.setController(controller);
+        root.setRoot(null);
+
+        Scene scene = new Scene(root.load(), 1280, 1080);
+        scene.setOnKeyReleased(event -> {
+            if (event.getCode() == KeyCode.A) {
+                ((InGameController)root.getController()).removeLastNumber();
+            } else if (event.getCode() == KeyCode.R) {
+                ((InGameController)root.getController()).clear();
+            } else if (event.getCode() == KeyCode.P) {
+                try {
+                    ((InGameController) root.getController()).createPdf();
+                } catch (DocumentException | IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (event.getCode() == KeyCode.W) {
+                try {
+                    ((InGameController) root.getController()).createWinnerPdf();
+                } catch (DocumentException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        stage.setScene(scene);
+        stage.setMaximized(true);
+        stage.show();
     }
 
 	/**

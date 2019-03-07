@@ -6,22 +6,35 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.HomeController">
-   <children>
-      <Button id="jouer" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="175.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="282.0" text="Jouer" AnchorPane.bottomAnchor="186.0" AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="175.0" onAction="#onPlay">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Button id="configuration" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="265.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="39.0" prefWidth="282.0" text="Configuration" AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="160.0" AnchorPane.topAnchor="265.0" onAction="#onSettings">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Button>
-      <Label id="hearder" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="89.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="282.0" text="JEU DE QUINE" textOverrun="CLIP" AnchorPane.bottomAnchor="286.0" AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="89.0">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-   </children>
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+            prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171"
+            fx:controller="application.controllers.HomeController">
+    <children>
+        <Button id="jouer" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="175.0"
+                maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                mnemonicParsing="false" prefHeight="39.0" prefWidth="282.0" text="Jouer" AnchorPane.bottomAnchor="186.0"
+                AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="175.0"
+                onAction="#onPlay">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
+        <Button id="configuration" alignment="CENTER" contentDisplay="CENTER" layoutX="158.0" layoutY="265.0"
+                maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                mnemonicParsing="false" prefHeight="39.0" prefWidth="282.0" text="Configuration"
+                AnchorPane.bottomAnchor="96.0" AnchorPane.leftAnchor="158.0" AnchorPane.rightAnchor="160.0"
+                AnchorPane.topAnchor="265.0" onAction="#onSettings">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Button>
+        <Label id="hearder" alignment="CENTER" contentDisplay="CENTER" layoutX="159.0" layoutY="89.0"
+               maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0"
+               prefWidth="282.0" text="JEU DE QUINE" textOverrun="CLIP" AnchorPane.bottomAnchor="286.0"
+               AnchorPane.leftAnchor="159.0" AnchorPane.rightAnchor="159.0" AnchorPane.topAnchor="89.0">
+            <font>
+                <Font size="18.0"/>
+            </font>
+        </Label>
+    </children>
 </AnchorPane>

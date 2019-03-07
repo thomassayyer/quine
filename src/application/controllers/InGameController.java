@@ -8,6 +8,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
@@ -30,6 +31,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Contrôleur de la page "En jeu".
@@ -52,19 +55,25 @@ public class InGameController extends Controller implements Initializable, Stora
      * Button option CartonPlein
      */
     @FXML
-    private Button cartonPlein;
+    private ToggleButton cartonPlein;
 
     /**
      * Button option LigneSimple
      */
     @FXML
-    private Button ligneSimple;
+    private ToggleButton ligneSimple;
 
     /**
-     * Image view pour les logos
+     * VBox pour les logos
      */
     @FXML
-    private VBox logoVBox;
+    private ImageView logo;
+
+    /**
+     * Deuxième VBox pour les logos
+     */
+    @FXML
+    private ImageView logo2;
 
     /**
      * Liste des cartons de joueurs absent
@@ -122,7 +131,7 @@ public class InGameController extends Controller implements Initializable, Stora
     private boolean playForAbsents;
 
     /**
-     * Crée un nouveau contrôleur pour la vue "InGame.fxml".
+     * Crée un nouveau contrôleur pour la page "En jeu".
      *
      * @param cards    Cartons à jouer
      * @param partners Partenaires ayant laissé un lot
@@ -166,11 +175,11 @@ public class InGameController extends Controller implements Initializable, Stora
             for (int i : numbers) {
                 Button btn = getButtonByNum(i);
                 if (btn != null) {
-                    btn.setStyle("-fx-background-color: #ff0000; ");
+                    btn.setStyle("-fx-background-color: #ff0000; -fx-font-size: 25px;");
                 }
             }
             if (button != null) {
-                button.setStyle("-fx-background-color: #00ff00; ");
+                button.setStyle("-fx-background-color: #00ff00; -fx-font-size: 25px;");
             }
             numbers.add(number);
         }
@@ -234,7 +243,7 @@ public class InGameController extends Controller implements Initializable, Stora
     private Button getButtonByNum (int number) {
         for (Node n : grid.getChildren()) {
             if (n instanceof Button) {
-                if (Integer.parseInt(((Button)n).getText()) == number) {
+                if (Integer.parseInt(((Button) n).getText()) == number) {
                     return (Button)n;
                 }
             }
@@ -247,8 +256,7 @@ public class InGameController extends Controller implements Initializable, Stora
      */
     public void onChangeTypeToCartonPlein() {
         this.type = CARTON_PLEIN;
-        cartonPlein.setText("[X] Carton plein");
-        ligneSimple.setText("Ligne simple");
+        ligneSimple.setSelected(false);
         clear();
     }
 
@@ -257,8 +265,8 @@ public class InGameController extends Controller implements Initializable, Stora
      */
     public void onChangeTypeToLignSimple() {
         this.type = LIGNE_SIMPLE;
-        ligneSimple.setText("[X] Ligne simple");
-        cartonPlein.setText("Carton plein");
+        cartonPlein.setSelected(false);
+        clear();
     }
 
     /**
@@ -307,23 +315,41 @@ public class InGameController extends Controller implements Initializable, Stora
         return cards;
     }
 
+    private void nextLogo(ImageView view) {
+        int nextPartner = Integer.parseInt(view.getId()) + 2;
+        if (nextPartner > partners.size() - 1) {
+            nextPartner = nextPartner % 2 == 0 ? 0 : 1;
+        }
+        Partner partner = partners.get(nextPartner);
+        view.setId(String.valueOf(nextPartner));
+        view.setImage(new Image(partner.getLogoFilepath()));
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        for (Partner partner : partners){
-            // Ajoute les images dans la image view
-            Image logo = new Image(partner.getLogoFilepath());
-            ImageView logoView = new ImageView(logo);
-            logoView.setFitWidth(150);
-            logoView.setFitHeight(150);
-            logoVBox.getChildren().addAll(logoView);
+        String[] filename = location.toString().split("/");
+        if (filename[filename.length - 1].equals("InGamePrizes.fxml")) {
+            return;
         }
+
+        logo.setImage(new Image(partners.get(0).getLogoFilepath()));
+        logo2.setImage(new Image(partners.get(1).getLogoFilepath()));
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            nextLogo(logo);
+        }, 10, 10, TimeUnit.SECONDS);
+
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            nextLogo(logo2);
+        }, 15, 10, TimeUnit.SECONDS);
 
         // Initialise la grid
         for (int column = 1; column < 11; column++) {
             for (int row = 0; row < 9; row++) {
                 int number = 10 * row + column;
-                Button button = new Button(String.valueOf(number));
+                Button button = new Button((number < 10 ? "0" : "") + String.valueOf(number));
+                button.setStyle("-fx-font-size: 25px");
                 button.setOnAction(event -> {
                     this.chooseNumber(number);
                 });
@@ -410,13 +436,13 @@ public class InGameController extends Controller implements Initializable, Stora
     private void removeNumber(int number) {
         Button btn = getButtonByNum(number);
         if (btn != null) {
-            btn.setStyle("");
+            btn.setStyle("-fx-font-size: 25px");
         }
         numbers.remove((Object)number);
         if (!numbers.isEmpty()) {
             Button lastBtn = getButtonByNum(numbers.getLast());
             if (lastBtn != null) {
-                lastBtn.setStyle("-fx-background-color: #00ff00; ");
+                lastBtn.setStyle("-fx-background-color: #00ff00; -fx-font-size: 25px");
             }
         }
         List<Card> cards = unfillAbsentBuyerCards(number);
